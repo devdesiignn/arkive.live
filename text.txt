@@ -1,0 +1,23 @@
+Inthesify 2.0
+
+All
+
+- Sign up
+- Sign in
+- Reset password
+- Update profile
+- Browse documents
+- Filter documents
+- Download documents
+- Like documents
+- Cite authors
+
+Admin
+
+- Upload documents  
+- Delete documents (Private)
+
+Super Admin
+
+- Add admin
+- Remove admin
