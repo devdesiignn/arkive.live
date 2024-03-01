@@ -1,5 +1,5 @@
 function Login(): JSX.Element {
-  return <div>Login n dndsakjdskj</div>;
+  return <div>Login Page</div>;
 }
 
 export default Login;
