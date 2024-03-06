@@ -11,7 +11,7 @@ import { Eye, EyeClosed } from "@phosphor-icons/react";
 function Signup(): JSX.Element {
   return (
     <>
-      <Card className="w-1/4 mx-auto">
+      <Card className="w-3/4 max-w-[400px] mx-auto">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>
         </CardHeader>

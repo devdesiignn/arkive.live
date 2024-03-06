@@ -11,7 +11,7 @@ import { Eye, EyeClosed } from "@phosphor-icons/react";
 function Login(): JSX.Element {
   return (
     <>
-      <Card className="w-1/4 mx-auto">
+      <Card className="w-3/4 max-w-[400px] mx-auto">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
         </CardHeader>
@@ -39,7 +39,7 @@ function Login(): JSX.Element {
               <EyeClosed size={24} />
             </div>
 
-            <Link to="/auth/forgot-password">Forgot Password?</Link>
+            <Link to="/auth/reset">Forgot Password?</Link>
 
             <div>
               <Button type="submit">Login</Button>
