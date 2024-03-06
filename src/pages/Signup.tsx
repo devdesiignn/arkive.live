@@ -8,16 +8,21 @@ import { Link } from "react-router-dom";
 
 import { Eye, EyeClosed } from "@phosphor-icons/react";
 
-function Login(): JSX.Element {
+function Signup(): JSX.Element {
   return (
     <>
       <Card className="w-1/4 mx-auto">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Create new account</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form action="">
+            <div>
+              <Label htmlFor="name">Full Name</Label>
+              <Input type="text" placeholder="Full Name" id="name"></Input>
+            </div>
+
             <div>
               <Label htmlFor="email">Email Address</Label>
               <Input
@@ -39,17 +44,15 @@ function Login(): JSX.Element {
               <EyeClosed size={24} />
             </div>
 
-            <Link to="/auth/forgot-password">Forgot Password?</Link>
-
             <div>
-              <Button type="submit">Login</Button>
+              <Button type="submit">Create Account</Button>
             </div>
           </form>
 
           <Separator />
 
           <p>
-            Don&apos;t have an account? <Link to="/auth/new">Create one</Link>
+            Already have an account? <Link to="/auth/login">Login</Link>
           </p>
         </CardContent>
       </Card>
@@ -57,4 +60,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default Signup;
