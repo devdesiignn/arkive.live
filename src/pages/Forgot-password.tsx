@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 function Reset(): JSX.Element {
@@ -17,7 +18,7 @@ function Reset(): JSX.Element {
   }, []);
 
   return (
-    <>
+    <div className="w-full h-screen flex items-center justify-center">
       <Card className="w-3/4 max-w-[400px] mx-auto">
         <CardHeader>
           <CardTitle>Reset your password</CardTitle>
@@ -25,7 +26,7 @@ function Reset(): JSX.Element {
 
         <CardContent>
           <form action="">
-            <div>
+            <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="email">Email Address</Label>
               <Input
                 type="email"
@@ -34,13 +35,20 @@ function Reset(): JSX.Element {
               ></Input>
             </div>
 
-            <div>
-              <Button type="submit">Reset Password</Button>
+            <div className="mt-9">
+              <Button type="submit" className="w-full">Reset Password</Button>
             </div>
           </form>
+
+          <p className="text-center text-sm pt-8">
+            Lost your way?{" "}
+            <Link to="/auth/login" className="text-sm underline">
+              Back to Login
+            </Link>
+          </p>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }
 
