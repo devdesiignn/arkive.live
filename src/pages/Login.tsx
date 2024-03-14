@@ -8,12 +8,17 @@ import { useState } from "react";
 
 import { Eye, EyeClosed } from "@phosphor-icons/react";
 
+import usePageTitle from "@/hooks/usePageTitle";
+
 function Login(): JSX.Element {
+  usePageTitle("Login");
+
+  const [submit, setSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <Card className="w-3/4 max-w-[400px] mx-auto">
+      <Card className="w-11/12 max-w-[500px] mx-auto">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
         </CardHeader>
@@ -26,6 +31,7 @@ function Login(): JSX.Element {
                 type="email"
                 placeholder="Email Address"
                 id="email"
+                required
               ></Input>
             </div>
 
@@ -36,7 +42,8 @@ function Login(): JSX.Element {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   id="password"
-                  className="relative "
+                  className="relative"
+                  required
                 ></Input>
 
                 {showPassword ? (
@@ -54,8 +61,8 @@ function Login(): JSX.Element {
               Forgot your password?
             </Link>
 
-            <div>
-              <Button type="submit" className="w-full">
+            <div className="mt-10">
+              <Button type="submit" className="w-full" disabled={submit}>
                 Login
               </Button>
             </div>

@@ -2,7 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Reset from "./pages/Forgot-password";
+import Reset from "./pages/Reset";
+import SetPassword from "./pages/SetPassword";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
       { path: "auth/login", element: <Login /> },
       { path: "auth/new", element: <Signup /> },
       { path: "auth/reset", element: <Reset /> },
+      { path: "auth/set-password", element: <SetPassword /> },
     ],
   },
 ]);

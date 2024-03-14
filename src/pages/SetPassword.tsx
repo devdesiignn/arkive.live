@@ -2,15 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Eye, EyeClosed } from "@phosphor-icons/react";
 import usePageTitle from "@/hooks/usePageTitle";
 
-function Signup(): JSX.Element {
-  usePageTitle("Create Account");
+function SetPassword(): JSX.Element {
+  usePageTitle("Set Password");
 
   const [submit, setSubmit] = useState(false);
 
@@ -20,47 +20,24 @@ function Signup(): JSX.Element {
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
 
+  const { toast } = useToast();
+
+  useEffect(() => {
+    toast({
+      title: "Password Reset Successful",
+      description: "Your password has been successfully reset.",
+    });
+  }, [toast]);
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="w-11/12 max-w-[500px] mx-auto">
         <CardHeader>
-          <CardTitle>Create new account</CardTitle>
+          <CardTitle>Set new password</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form action="">
-            <div className="flex gap-4 mb-4">
-              <div className="flex flex-col gap-2 basis-1/2">
-                <Label htmlFor="fname">First Name</Label>
-                <Input
-                  type="text"
-                  placeholder="First Name"
-                  id="fname"
-                  required
-                ></Input>
-              </div>
-
-              <div className="flex flex-col gap-2 basis-1/2">
-                <Label htmlFor="lname">Last Name</Label>
-                <Input
-                  type="text"
-                  placeholder="Last Name"
-                  id="lname"
-                  required
-                ></Input>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2 mb-4">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                type="email"
-                placeholder="Email Address"
-                id="email"
-                required
-              ></Input>
-            </div>
-
             <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="password">Password</Label>
               <div className="flex gap-4 items-center">
@@ -112,21 +89,14 @@ function Signup(): JSX.Element {
 
             <div className="mt-10">
               <Button type="submit" className="w-full" disabled={submit}>
-                Create Account
+                Set Password
               </Button>
             </div>
           </form>
-
-          <p className="text-center text-sm pt-8">
-            Already have an account?{" "}
-            <Link to="/auth/login" className="text-sm underline">
-              Login
-            </Link>
-          </p>
         </CardContent>
       </Card>
     </div>
   );
 }
 
-export default Signup;
+export default SetPassword;

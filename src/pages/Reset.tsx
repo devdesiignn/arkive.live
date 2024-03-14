@@ -5,21 +5,28 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import usePageTitle from "@/hooks/usePageTitle";
 
 function Reset(): JSX.Element {
-  const { toast } = useToast();
+  usePageTitle("Forgot Password");
 
+  const [submit, setSubmit] = useState(false);
+
+  const { toast } = useToast();
+  
   useEffect(() => {
     toast({
-      title: "Uh oh! Something went wrong.",
-      description: "There was a problem with your request.",
+      title: "Password Reset",
+      description:
+        "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
     });
-  }, []);
+  }, [toast]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <Card className="w-3/4 max-w-[400px] mx-auto">
+      <Card className="w-11/12 max-w-[500px] mx-auto">
         <CardHeader>
           <CardTitle>Reset your password</CardTitle>
         </CardHeader>
@@ -32,11 +39,14 @@ function Reset(): JSX.Element {
                 type="email"
                 placeholder="Email Address"
                 id="email"
+                required
               ></Input>
             </div>
 
-            <div className="mt-9">
-              <Button type="submit" className="w-full">Reset Password</Button>
+            <div className="mt-10">
+              <Button type="submit" className="w-full" disabled={submit}>
+                Reset Password
+              </Button>
             </div>
           </form>
 
