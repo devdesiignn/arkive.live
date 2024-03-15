@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import usePageTitle from "@/hooks/usePageTitle";
 
 function Reset(): JSX.Element {
-  usePageTitle("Forgot Password");
+  usePageTitle("Reset Password");
 
   const [submit, setSubmit] = useState(false);
 
@@ -18,7 +18,7 @@ function Reset(): JSX.Element {
 
   useEffect(() => {
     toast({
-      title: "Password Reset",
+      title: "Password Reset Request",
       description:
         "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
     });

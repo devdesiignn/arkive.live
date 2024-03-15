@@ -10,7 +10,7 @@ import { Eye, EyeClosed } from "@phosphor-icons/react";
 import usePageTitle from "@/hooks/usePageTitle";
 
 function SetPassword(): JSX.Element {
-  usePageTitle("Set Password");
+  usePageTitle("Set New Password");
 
   const [submit, setSubmit] = useState(false);
 
