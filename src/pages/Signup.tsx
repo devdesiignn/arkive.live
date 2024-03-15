@@ -20,6 +20,24 @@ function Signup(): JSX.Element {
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
 
+  function handleSubmit(
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLButtonElement>
+  ) {
+    // Prevent full reload
+    e.preventDefault();
+
+    // disable submit button
+    setSubmit(true);
+
+    // Sign Up logic
+
+    // Average time to sign up
+    setTimeout(() => setSubmit(false), 5000);
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="w-11/12 max-w-[500px] mx-auto">
@@ -90,7 +108,13 @@ function Signup(): JSX.Element {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm Password"
                   id="confirm-password"
-                  className="relative"
+                  className={`relative ${
+                    password &&
+                    confirmPassword &&
+                    password !== confirmPassword &&
+                    "focus-visible:ring-red-500"
+                  }
+                  `}
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -108,10 +132,21 @@ function Signup(): JSX.Element {
                   />
                 )}
               </div>
+              {password && confirmPassword && password !== confirmPassword && (
+                <p className="text-sm text-red-500 font-medium">
+                  Passwords do not match!
+                </p>
+              )}
             </div>
 
             <div className="mt-10">
-              <Button type="submit" className="w-full" disabled={submit}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={submit}
+                onClick={handleSubmit}
+                onSubmit={handleSubmit}
+              >
                 Create Account
               </Button>
             </div>

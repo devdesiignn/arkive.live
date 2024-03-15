@@ -16,6 +16,24 @@ function Login(): JSX.Element {
   const [submit, setSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  function handleSubmit(
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLButtonElement>
+  ) {
+    // Prevent full reload
+    e.preventDefault();
+
+    // disable submit button
+    setSubmit(true);
+
+    // Sign Up logic
+
+    // Average time to sign up
+    setTimeout(() => setSubmit(false), 5000);
+  }
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="w-11/12 max-w-[500px] mx-auto">
@@ -62,7 +80,13 @@ function Login(): JSX.Element {
             </Link>
 
             <div className="mt-10">
-              <Button type="submit" className="w-full" disabled={submit}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={submit}
+                onClick={handleSubmit}
+                onSubmit={handleSubmit}
+              >
                 Login
               </Button>
             </div>
