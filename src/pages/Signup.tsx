@@ -4,10 +4,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import zxcvbn from "zxcvbn";
 
-import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
+
 import usePageTitle from "@/hooks/usePageTitle";
+import ShowPasswordStrength from "@/components/ShowPasswordStrength";
+
+type Strength = 0 | 1 | 2 | 3;
 
 function Signup(): JSX.Element {
   usePageTitle("Create Account");
@@ -19,6 +24,8 @@ function Signup(): JSX.Element {
 
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
+
+  const [strength, setStrength] = useState<Strength>(0);
 
   function handleSubmit(
     e:
@@ -37,6 +44,12 @@ function Signup(): JSX.Element {
     // Average time to sign up
     setTimeout(() => setSubmit(false), 5000);
   }
+
+  useEffect(() => {
+    setStrength(zxcvbn(password).score as Strength);
+
+    return () => setStrength(0);
+  }, [password]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
@@ -99,6 +112,15 @@ function Signup(): JSX.Element {
                   <EyeClosed size={28} onClick={() => setShowPassword(true)} />
                 )}
               </div>
+              {password && password.length < 8 && (
+                <p className="text-sm text-gray-500 font-medium flex gap-1 items-center">
+                  <Info weight="fill" /> Password must be at least 8 characters
+                  long
+                </p>
+              )}
+              {password && password.length >= 8 && (
+                <ShowPasswordStrength strength={strength} />
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -133,8 +155,8 @@ function Signup(): JSX.Element {
                 )}
               </div>
               {password && confirmPassword && password !== confirmPassword && (
-                <p className="text-sm text-red-500 font-medium">
-                  Passwords do not match!
+                <p className="text-sm text-red-500 font-medium flex gap-1 items-center">
+                  <Info weight="fill" /> Passwords do not match!
                 </p>
               )}
             </div>
