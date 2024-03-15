@@ -33,8 +33,8 @@ function ShowPasswordStrength({ strength }: Props) {
         {strength === 0 && "😣 Very Weak"}
         {strength === 1 && "😥 Weak"}
         {strength === 2 && "🥱 Average"}
-        {strength === 3 && "😌 Strong"}
-        {strength === 4 && "😎 Safe"}
+        {strength === 3 && "🤩 Strong"}
+        {strength === 4 && "😎 SAFE"}
       </p>
     </div>
   );
