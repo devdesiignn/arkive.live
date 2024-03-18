@@ -16,11 +16,22 @@ function Reset(): JSX.Element {
 
   const { toast } = useToast();
 
+  // RESET REQUEST SUCCESSFUL
   useEffect(() => {
     toast({
       title: "Password Reset Request",
       description:
         "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
+    });
+  }, [toast]);
+
+  // ACCOUNT DOES NOT EXIST
+  useEffect(() => {
+    toast({
+      title: "Account Not Found!",
+      description:
+        "Sorry, the email provided isn't associated with any account. Please verify the email or sign up to create one.",
+      variant: "destructive",
     });
   }, [toast]);
 

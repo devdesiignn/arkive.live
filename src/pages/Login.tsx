@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Eye, EyeClosed } from "@phosphor-icons/react";
 
@@ -12,6 +13,8 @@ import usePageTitle from "@/hooks/usePageTitle";
 
 function Login(): JSX.Element {
   usePageTitle("Login");
+
+  const { toast } = useToast();
 
   const [submit, setSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -33,6 +36,16 @@ function Login(): JSX.Element {
     // Average time to sign up
     setTimeout(() => setSubmit(false), 5000);
   }
+
+  // ACCOUNT DOES NOT EXIST
+  useEffect(() => {
+    toast({
+      title: "Account Not Found!",
+      description:
+        "Sorry, the email provided isn't associated with any account. Please verify the email or sign up to create one.",
+      variant: "destructive",
+    });
+  }, [toast]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">

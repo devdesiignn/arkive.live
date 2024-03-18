@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -16,6 +17,8 @@ type Strength = 0 | 1 | 2 | 3;
 
 function Signup(): JSX.Element {
   usePageTitle("Create Account");
+
+  const { toast } = useToast();
 
   const [submit, setSubmit] = useState(false);
 
@@ -50,6 +53,25 @@ function Signup(): JSX.Element {
 
     return () => setStrength(0);
   }, [password]);
+
+  // VERIFY YOUR ACCOUNT
+  useEffect(() => {
+    toast({
+      title: "Verify Your Email",
+      description:
+        "Thank you for signing up! Please check your inbox for a verification email. Once verified, you can log in and access your account.",
+    });
+  }, [toast]);
+
+  // ACCOUNT ALREADY EXIST
+  useEffect(() => {
+    toast({
+      title: "Account Already Exists!",
+      description:
+        "Sorry, but an account with this email already exists. Please try signing in or use a different email address.",
+      variant: "destructive",
+    });
+  }, [toast]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
