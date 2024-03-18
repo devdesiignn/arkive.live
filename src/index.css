@@ -10,3 +10,21 @@
     font-family: "Noto Sans", sans-serif;
   }
 }
+
+@keyframes slide {
+  0% {
+    transform: translateX(-50px);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+
+  100% {
+    transform: translateX(-50px);
+  }
+}
+
+.animate-slide {
+  animation: slide 5s ease-in-out infinite;
+}
