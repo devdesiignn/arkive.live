@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Reset from "./pages/Reset";
 import SetPassword from "./pages/SetPassword";
 import Error404 from "./pages/Error-404";
+import Test from "./pages/Test";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: "auth/reset", element: <Reset /> },
       { path: "auth/set-password", element: <SetPassword /> },
       { path: "*", element: <Error404 /> },
+      { path: "/test", element: <Test /> },
     ],
   },
 ]);
