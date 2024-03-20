@@ -11,16 +11,22 @@ import {
 } from "@/components/ui/pagination";
 import { useEffect, useState } from "react";
 
-function Test() {
+// SUPABASE
+// interface Data {
+//   // Define the structure of your data
+// }
+
+function Test(): JSX.Element {
   const [data, setData] = useState<object>({});
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const limit = 10;
+  const ITEMS_PER_PAGE = 10;
 
   async function fetchData(page: number): Promise<void> {
     if (page < 1 || page > totalPages) return;
 
-    const offset = (page - 1) * limit;
+    const limit = ITEMS_PER_PAGE;
+    const offset = (page - 1) * ITEMS_PER_PAGE;
 
     try {
       const response = await fetch(
@@ -53,7 +59,7 @@ function Test() {
       }
 
       const totalItems = await response.json();
-      const totalPages = Math.ceil(totalItems.total / limit);
+      const totalPages = Math.ceil(totalItems.total / ITEMS_PER_PAGE);
 
       setTotalPages(totalPages);
     } catch (error: unknown) {
@@ -80,6 +86,38 @@ function Test() {
   }, []);
 
   console.log(currentPage, data, totalPages);
+
+  // SUPABASE
+  // const [data, setData] = useState<Data[]>([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(0);
+  // const ITEMS_PER_PAGE = 10;
+
+  // async function fetchData(page: number) {
+  //   if (page < 1 || page > totalPages) return;
+
+  //   const from = (page - 1) * ITEMS_PER_PAGE;
+  //   const to = page * ITEMS_PER_PAGE - 1;
+
+  //   const {
+  //     data: fetchedData,
+  //     error,
+  //     count,
+  //   } = await supabase.from<Data>("TABLE").select("*").range(from, to);
+
+  //   if (error) {
+  //     console.error("Error fetching data:", error.message);
+  //     return;
+  //   }
+
+  //   setData(fetchedData || []);
+  //   setCurrentPage(page);
+  //   setTotalPages(Math.ceil(count / ITEMS_PER_PAGE));
+  // }
+
+  // useEffect(() => {
+  //   fetchData(currentPage);
+  // }, []);
 
   return (
     <div>
