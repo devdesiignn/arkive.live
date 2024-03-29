@@ -1,5 +1,3 @@
-import Layout from "@/components/Layout";
-
 import {
   Pagination,
   PaginationContent,
@@ -10,10 +8,17 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import Layout from "@/components/Layout";
+import usePageTitle from "@/hooks/usePageTitle";
+import mockThesisData from "@/mock/results";
+
 function Home(): JSX.Element {
+  usePageTitle("Home");
+
+  console.log(mockThesisData)
+
   return (
     <Layout>
-      
       <div className="">Results</div>
 
       <div className="flex items-center justify-between w-2/3 mx-auto px-8 py-2 text-sm">

@@ -11,16 +11,14 @@ import Test from "./pages/Test";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home  />,
-    children: [
-      { path: "auth/login", element: <Login /> },
-      { path: "auth/new", element: <Signup /> },
-      { path: "auth/reset", element: <Reset /> },
-      { path: "auth/set-password", element: <SetPassword /> },
-      { path: "*", element: <Error404 /> },
-      { path: "/test", element: <Test /> },
-    ],
+    element: <Home />,
   },
+  { path: "auth/login", element: <Login /> },
+  { path: "auth/new", element: <Signup /> },
+  { path: "auth/reset", element: <Reset /> },
+  { path: "auth/set-password", element: <SetPassword /> },
+  { path: "*", element: <Error404 /> },
+  { path: "/test", element: <Test /> },
 ]);
 
 function AppRouter() {
