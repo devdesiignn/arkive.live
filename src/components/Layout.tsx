@@ -9,7 +9,7 @@ function Layout({ children }: { children: ReactNode }): JSX.Element {
     <div>
       <Header />
 
-      <div className="flex h-screen">
+      <div className="flex min-h-screen">
         <Filter />
 
         <Separator orientation="vertical" />
