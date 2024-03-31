@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 
 function Filter(): JSX.Element {
   return (
-    <aside className="w-[400px] p-3 flex flex-col justify-between">
-      <div className="sticky top-[80px] flex flex-col gap-4">
+    <aside className="w-[400px] p-3 flex flex-col justify-between h-screen">
+      <div className="sticky top-[80px]">
         <p className="font-semibold text-lg flex justify-between items-center">
           Filters <FunnelSimple size={24} />
         </p>
@@ -115,14 +115,14 @@ function Filter(): JSX.Element {
             </AccordionItem>
           </Accordion>
         </div>
-      </div>
 
-      <Link
-          to="/auth/login"
-          className="flex items-center gap-2 text-lg text-red-500 p-2 font-medium"
-        >
-          <SignOut weight="bold" /> Log out
-        </Link>
+        <Link
+        to="/auth/login"
+        className="flex items-center gap-2 text-lg text-red-500 p-2 font-medium mt-[65%]"
+      >
+        <SignOut weight="bold" /> Log out
+      </Link>
+      </div>
     </aside>
   );
 }
