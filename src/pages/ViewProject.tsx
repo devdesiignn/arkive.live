@@ -14,7 +14,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-import { DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react";
+import { DownloadSimple } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 import { useParams } from "react-router-dom";
