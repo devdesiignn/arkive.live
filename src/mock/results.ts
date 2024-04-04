@@ -35,8 +35,17 @@ function generateMockThesis(): Thesis {
       fullName: "John Doe",
       email: "john.doe@example.com",
     },
-    abstract:
-      "This thesis investigates the application of machine learning algorithms in image recognition tasks...",
+    abstract: `In this thesis, the application of machine learning algorithms in image recognition tasks is thoroughly investigated. With the increasing prevalence of digital imagery in various fields, the need for accurate and efficient image recognition systems has become paramount. This research aims to contribute to this field by exploring the effectiveness of different machine learning algorithms in addressing the complexities inherent in image recognition.
+
+    The study commences by elucidating fundamental concepts in machine learning, providing an extensive overview of algorithms such as convolutional neural networks (CNNs), support vector machines (SVMs), and decision trees. Through meticulous experimentation and analysis, the capabilities of these algorithms in identifying patterns and features within images are scrutinized.
+      
+    Furthermore, the research delves into the challenges encountered in image recognition, including occlusion, illumination variations, and intra-class variability. Novel techniques for mitigating these challenges are proposed and evaluated, with the goal of enhancing the robustness and accuracy of image recognition systems.
+      
+    In addition to algorithmic approaches, the thesis investigates the influence of dataset size and quality on model performance. By conducting experiments across diverse datasets of varying complexities, the impact of dataset characteristics on model generalization and adaptability is thoroughly examined.
+      
+    Moreover, the study explores the implications of transfer learning and data augmentation techniques in improving the efficiency and scalability of image recognition systems. By leveraging pre-trained models and augmenting datasets with synthetically generated images, practical strategies for enhancing model performance while minimizing resource-intensive training requirements are elucidated.
+      
+    Overall, this thesis provides valuable insights into the application of machine learning algorithms in image recognition tasks. Through rigorous experimentation, analysis, and innovation, it aims to pave the way for advancements in image recognition technology, facilitating progress and innovation in the digital era.`,
     keywords: ["Machine Learning", "Image Recognition", "Deep Learning"],
     publicationDate: new Date("2023-01-15"),
     advisors: ["Dr. Jane Smith", "Prof. Robert Johnson"],
@@ -54,6 +63,6 @@ function generateMockThesis(): Thesis {
 }
 
 // Generate 50 mock thesis data entries
-const mockThesisData: Thesis[] = Array.from({ length: 1 }, generateMockThesis);
+const mockThesisData: Thesis[] = Array.from({ length: 10 }, generateMockThesis);
 
 export default mockThesisData;

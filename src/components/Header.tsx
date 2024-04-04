@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
 import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 
@@ -57,7 +58,9 @@ function Header(): JSX.Element {
 
   return (
     <header className="flex justify-between items-center px-8 py-2 border-b sticky top-0 z-10 bg-white">
-      <div className="font-medium">Placeholder</div>
+      <div className="font-black font-serif text-xl underline">
+        <Link to="/">Archive.</Link>
+      </div>
 
       <div className="basis-2/3 ">
         <form action="">
