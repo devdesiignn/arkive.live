@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
 import zxcvbn from "zxcvbn";
 
-import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
+import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 
@@ -67,7 +67,7 @@ function SetPassword(): JSX.Element {
         </CardHeader>
 
         <CardContent>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="password">Password</Label>
               <div className="flex gap-4 items-center">
@@ -138,14 +138,12 @@ function SetPassword(): JSX.Element {
             </div>
 
             <div className="mt-10">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={submit}
-                onClick={handleSubmit}
-                onSubmit={handleSubmit}
-              >
-                Set Password
+              <Button type="submit" className="w-full" disabled={submit}>
+                {submit ? (
+                  <SpinnerGap className="h-6 w-6 animate-spin" weight="bold" />
+                ) : (
+                  "Set Password"
+                )}
               </Button>
             </div>
           </form>

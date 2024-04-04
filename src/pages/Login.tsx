@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { Eye, EyeClosed, SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 
@@ -55,7 +55,7 @@ function Login(): JSX.Element {
         </CardHeader>
 
         <CardContent>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="email">Email Address</Label>
               <Input
@@ -93,14 +93,12 @@ function Login(): JSX.Element {
             </Link>
 
             <div className="mt-10">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={submit}
-                onClick={handleSubmit}
-                onSubmit={handleSubmit}
-              >
-                Login
+              <Button type="submit" className="w-full" disabled={submit}>
+                {submit ? (
+                  <SpinnerGap className="h-6 w-6 animate-spin" weight="bold" />
+                ) : (
+                  "Login"
+                )}
               </Button>
             </div>
           </form>

@@ -5,7 +5,7 @@ function usePageTitle(title: string): void {
     document.title = `${title} - ${document.title}`;
 
     return () => {
-      document.title = "Prjstore";
+      document.title = "Archive";
     };
   }, [title]);
 }

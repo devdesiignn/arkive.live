@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
 
-import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
+import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
@@ -81,7 +81,7 @@ function Signup(): JSX.Element {
         </CardHeader>
 
         <CardContent>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="flex gap-4 mb-4">
               <div className="flex flex-col gap-2 basis-1/2">
                 <Label htmlFor="fname">First Name</Label>
@@ -184,14 +184,12 @@ function Signup(): JSX.Element {
             </div>
 
             <div className="mt-10">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={submit}
-                onClick={handleSubmit}
-                onSubmit={handleSubmit}
-              >
-                Create Account
+              <Button type="submit" className="w-full" disabled={submit}>
+                {submit ? (
+                  <SpinnerGap className="h-6 w-6 animate-spin" weight="bold" />
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </div>
           </form>

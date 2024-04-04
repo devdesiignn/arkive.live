@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
-import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
+import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
@@ -59,7 +59,7 @@ function Header(): JSX.Element {
   return (
     <header className="flex justify-between items-center px-8 py-2 border-b sticky top-0 z-10 bg-white">
       <div className="font-black font-serif text-xl underline">
-        <Link to="/">Archive.</Link>
+        <Link to="/home">Archive.</Link>
       </div>
 
       <div className="basis-2/3 ">
@@ -94,7 +94,7 @@ function Header(): JSX.Element {
               </DialogDescription>
             </DialogHeader>
 
-            <form action="">
+            <form onSubmit={handleSubmit}>
               <div className="flex gap-4 mb-4">
                 <div className="flex flex-col gap-2 basis-1/2">
                   <Label htmlFor="fname">First Name</Label>
@@ -202,14 +202,15 @@ function Header(): JSX.Element {
               </div>
 
               <DialogFooter className="mt-10">
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={submit}
-                  onClick={handleSubmit}
-                  onSubmit={handleSubmit}
-                >
-                  Save changes
+                <Button type="submit" className="w-full" disabled={submit}>
+                  {submit ? (
+                    <SpinnerGap
+                      className="h-6 w-6 animate-spin"
+                      weight="bold"
+                    />
+                  ) : (
+                    "Save changes"
+                  )}
                 </Button>
               </DialogFooter>
             </form>

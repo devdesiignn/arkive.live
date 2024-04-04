@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 
@@ -61,7 +62,7 @@ function Reset(): JSX.Element {
         </CardHeader>
 
         <CardContent>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="email">Email Address</Label>
               <Input
@@ -73,14 +74,12 @@ function Reset(): JSX.Element {
             </div>
 
             <div className="mt-10">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={submit}
-                onClick={handleSubmit}
-                onSubmit={handleSubmit}
-              >
-                Reset Password
+              <Button type="submit" className="w-full">
+                {submit ? (
+                  <SpinnerGap className="h-6 w-6 animate-spin" weight="bold" />
+                ) : (
+                  " Reset Password"
+                )}
               </Button>
             </div>
           </form>

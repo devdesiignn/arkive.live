@@ -1,11 +1,9 @@
 // Define interfaces
 interface Thesis {
   title: string;
-  author: Author;
   abstract: string;
   keywords: string[];
-  publicationDate: Date;
-  advisors: string[];
+  author: Author;
   degree: Degree;
   documentUrl: string;
   metadata: Metadata;
@@ -47,8 +45,6 @@ function generateMockThesis(): Thesis {
       
     Overall, this thesis provides valuable insights into the application of machine learning algorithms in image recognition tasks. Through rigorous experimentation, analysis, and innovation, it aims to pave the way for advancements in image recognition technology, facilitating progress and innovation in the digital era.`,
     keywords: ["Machine Learning", "Image Recognition", "Deep Learning"],
-    publicationDate: new Date("2023-01-15"),
-    advisors: ["Dr. Jane Smith", "Prof. Robert Johnson"],
     degree: {
       type: "Master's",
       program: "Computer Science",

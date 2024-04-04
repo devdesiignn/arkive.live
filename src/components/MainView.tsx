@@ -39,7 +39,7 @@ function TopbarView(): JSX.Element {
         <p className="shrink-0">Sort By:</p>
 
         <Select>
-          <SelectTrigger className="focus-visible:ring-0 focus-visible:ring-offset-0 ">
+          <SelectTrigger className="ring-0 ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
             <SelectValue placeholder="Default" />
           </SelectTrigger>
           <SelectContent>
@@ -50,7 +50,7 @@ function TopbarView(): JSX.Element {
       </div>
 
       <Button className="p-4 font-medium">
-        <Link to="" className="flex items-center gap-2 ">
+        <Link to="/project/upload" className="flex items-center gap-2 ">
           <UploadSimple weight="bold" size={20} />
           Upload your Research Project
         </Link>
