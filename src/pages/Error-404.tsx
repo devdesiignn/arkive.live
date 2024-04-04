@@ -6,7 +6,7 @@ import { Warning, ArrowUpRight } from "@phosphor-icons/react";
 
 function Error404() {
   return (
-    <div className="w-full h-screen flex items-center justify-center text-center selection:bg-black selection:text-white">
+    <div className="bg-white w-full h-screen flex items-center justify-center text-center selection:bg-black selection:text-white">
       <div className="flex flex-col items-center gap-8 lg:gap-12 w-11/12 mx-auto">
         <h1 className="flex text-4xl sm:text-5xl lg:text-6xl items-center gap-1 leading-[normal] font-black select-none">
           4<Warning weight="thin" />4

@@ -6,7 +6,7 @@ import Filter from "@/components/Sidebar";
 
 function Layout({ children }: { children: ReactNode }): JSX.Element {
   return (
-    <div>
+    <div className="bg-white">
       <Header />
 
       <div className="flex min-h-screen">

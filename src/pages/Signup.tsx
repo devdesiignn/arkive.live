@@ -74,7 +74,7 @@ function Signup(): JSX.Element {
   }, [toast]);
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="bg-white w-full h-screen flex items-center justify-center">
       <Card className="w-11/12 max-w-[500px] mx-auto">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>

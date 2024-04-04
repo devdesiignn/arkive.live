@@ -62,12 +62,18 @@ function TopbarView(): JSX.Element {
 function ResultsView(): JSX.Element {
   return (
     <div className="grid grid-cols-1 gap-4">
-      {mockThesisData?.map((mockThesis, index) => {
+      {mockThesisData?.map((mockThesis) => {
         return (
-          <Card key={index}>
+          <Card key={mockThesis.id}>
             <CardHeader className="gap-4">
               <CardTitle className="hover:underline">
-                <Link to="">{mockThesis.title}</Link>
+                <Link
+                  to={`/projects/${mockThesis.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {mockThesis.title}
+                </Link>
               </CardTitle>
               <CardDescription className="flex flex-wrap gap-1">
                 {mockThesis.keywords.map((keyword, index) => {

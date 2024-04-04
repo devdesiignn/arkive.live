@@ -4,6 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -17,9 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 import { Info, SpinnerGap } from "@phosphor-icons/react";
 
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import usePageTitle from "@/hooks/usePageTitle";
@@ -220,6 +223,17 @@ function UploadProject(): JSX.Element {
             )}
           </form>
         </CardContent>
+
+        <Separator/>
+        
+        <CardFooter className="justify-center pt-6">
+          <p className="text-center text-sm">
+            Not doing this again?{" "}
+            <Link to="/home" className="text-sm underline">
+              Back to Home
+            </Link>
+          </p>
+        </CardFooter>
       </Card>
     </div>
   );

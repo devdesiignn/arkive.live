@@ -1,5 +1,6 @@
 // Define interfaces
 interface Thesis {
+  id: string;
   title: string;
   abstract: string;
   keywords: string[];
@@ -22,12 +23,13 @@ interface Degree {
 }
 
 interface Metadata {
-  dateCreated: Date;
+  dateUploaded: Date;
 }
 
 // Generate mock data for a single thesis
-function generateMockThesis(): Thesis {
+function generateMockThesis(index: number): Thesis {
   return {
+    id: (index + 1).toString(),
     title: "Exploring Machine Learning Algorithms for Image Recognition",
     author: {
       fullName: "John Doe",
@@ -37,13 +39,7 @@ function generateMockThesis(): Thesis {
 
     The study commences by elucidating fundamental concepts in machine learning, providing an extensive overview of algorithms such as convolutional neural networks (CNNs), support vector machines (SVMs), and decision trees. Through meticulous experimentation and analysis, the capabilities of these algorithms in identifying patterns and features within images are scrutinized.
       
-    Furthermore, the research delves into the challenges encountered in image recognition, including occlusion, illumination variations, and intra-class variability. Novel techniques for mitigating these challenges are proposed and evaluated, with the goal of enhancing the robustness and accuracy of image recognition systems.
-      
-    In addition to algorithmic approaches, the thesis investigates the influence of dataset size and quality on model performance. By conducting experiments across diverse datasets of varying complexities, the impact of dataset characteristics on model generalization and adaptability is thoroughly examined.
-      
-    Moreover, the study explores the implications of transfer learning and data augmentation techniques in improving the efficiency and scalability of image recognition systems. By leveraging pre-trained models and augmenting datasets with synthetically generated images, practical strategies for enhancing model performance while minimizing resource-intensive training requirements are elucidated.
-      
-    Overall, this thesis provides valuable insights into the application of machine learning algorithms in image recognition tasks. Through rigorous experimentation, analysis, and innovation, it aims to pave the way for advancements in image recognition technology, facilitating progress and innovation in the digital era.`,
+    Furthermore, the research delves into the challenges encountered in image recognition, including occlusion, illumination variations, and intra-class variability. Novel techniques for mitigating these challenges are proposed and evaluated, with the goal of enhancing the robustness and accuracy of image recognition systems.`,
     keywords: ["Machine Learning", "Image Recognition", "Deep Learning"],
     degree: {
       type: "Master's",
@@ -53,12 +49,14 @@ function generateMockThesis(): Thesis {
     },
     documentUrl: "https://example.com/thesis.pdf",
     metadata: {
-      dateCreated: new Date("2023-01-01"),
+      dateUploaded: new Date(),
     },
   };
 }
 
 // Generate 50 mock thesis data entries
-const mockThesisData: Thesis[] = Array.from({ length: 10 }, generateMockThesis);
+const mockThesisData: Thesis[] = Array.from({ length: 10 }, (_, index) =>
+  generateMockThesis(index)
+);
 
 export default mockThesisData;

@@ -2,10 +2,14 @@ async function handleDownload({
   filePath,
   fileName,
 }: {
-  filePath: string;
-  fileName: string;
+  filePath?: string;
+  fileName?: string;
 }) {
   try {
+    if (!filePath) {
+      throw new Error("File Path is missing");
+    }
+
     const response = await fetch(filePath);
     const blob = await response.blob();
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function usePageTitle(title: string): void {
+function usePageTitle(title: string | undefined): void {
   useEffect(() => {
     document.title = `${title} - ${document.title}`;
 

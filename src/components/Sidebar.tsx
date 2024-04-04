@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 function Filter(): JSX.Element {
   return (
-    <div>
+    <div className="sticky top-[80px]">
       <p className="font-semibold text-lg flex justify-between items-center">
         Filters <FunnelSimple size={24} />
       </p>
@@ -123,7 +123,7 @@ function Sidebar(): JSX.Element {
     <aside className="w-[400px] p-3">
       <Filter />
 
-      <div className="mt-[65%]">
+      <div className="mt-[65%] sticky top-[500px]">
         <Link
           to="/auth/login"
           className="flex items-center gap-2 text-base text-red-500 p-2 font-medium"
