@@ -42,6 +42,7 @@ function KeywordInput(props: KeywordInputProps): JSX.Element {
         delimiters={delimiters}
         handleDelete={handleDelete}
         handleAddition={handleAddition}
+        autofocus={false}
         {...props}
       />
     </div>

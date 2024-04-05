@@ -224,7 +224,7 @@ function UploadProject(): JSX.Element {
 
                 <div className="flex flex-col gap-2 mb-4">
                   <Label htmlFor="file">Project File</Label>
-                  <Input type="file" accept="pdf" required></Input>
+                  <Input type="file" accept=".pdf" required></Input>
                   <p className="text-sm text-gray-500 flex gap-1 items-center">
                     <Info weight="fill" /> Acceptable format (PDF)*
                   </p>
