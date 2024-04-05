@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
@@ -8,10 +8,17 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 
-import { FunnelSimple, X, SignOut } from "@phosphor-icons/react";
+import { FunnelSimple, SignOut } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 
+import { useState } from "react";
+import { Tag } from "react-tag-input";
+
+import KeywordInput from "@/components/KeywordInput";
+
 function Filter(): JSX.Element {
+  const [keywords, setKeywords] = useState<Tag[]>([]);
+
   return (
     <div className="sticky top-[80px]">
       <p className="font-semibold text-lg flex justify-between items-center">
@@ -64,40 +71,24 @@ function Filter(): JSX.Element {
             </AccordionTrigger>
             <AccordionContent>
               <div className="text-sm">
-                <form>
-                  <Input
-                    type="email"
-                    placeholder="Enter keyword, then Enter"
-                    className="focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-2 focus-visible:border-gray-700"
-                  />
-                </form>
-
-                <div className="mt-4 flex flex-wrap gap-2 py-2 text-xs">
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    AI
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    Computer Science
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    CyberSecurity
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    Data Science
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    World Health
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                  <span className="p-1 rounded bg-black text-white flex items-center gap-1">
-                    Explosive Power
-                    <X weight="bold" className="cursor-pointer" />
-                  </span>
-                </div>
+                <KeywordInput
+                  tags={keywords}
+                  setTags={setKeywords}
+                  inputFieldPosition="top"
+                  allowDragDrop={false}
+                  labelField="keyword"
+                  allowUnique={true}
+                  placeholder="Keywords, max. 10"
+                  minTags={3}
+                  maxTags={10}
+                  id="keywords"
+                  classNames={{
+                    tagInputField:
+                      "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-2 focus-visible:border-gray-700 mb-4",
+                    tag: "px-2 py-1 rounded bg-black text-white flex items-center gap-1 text-sm",
+                    selected: "flex gap-1 flex-wrap",
+                  }}
+                />
               </div>
             </AccordionContent>
           </AccordionItem>
