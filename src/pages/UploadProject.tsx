@@ -25,8 +25,10 @@ import { Info, SpinnerGap } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import usePageTitle from "@/hooks/usePageTitle";
+import { Tag } from "react-tag-input";
+
 import KeywordInput from "@/components/KeywordInput";
+import usePageTitle from "@/hooks/usePageTitle";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
@@ -35,6 +37,7 @@ function UploadProject(): JSX.Element {
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
+  const [keywords, setKeywords] = useState<Tag[]>([]);
 
   function handleSubmit(
     e:
@@ -189,24 +192,21 @@ function UploadProject(): JSX.Element {
                       (separate with comma)
                     </span>
                   </Label>
-                  {/* <Input
-                    type="text"
-                    placeholder="Keywords"
-                    id="keywords"
-                    required
-                  ></Input> */}
                   <KeywordInput
+                    tags={keywords}
+                    setTags={setKeywords}
                     inputFieldPosition="top"
                     allowDragDrop={false}
                     labelField="keyword"
                     allowUnique={true}
                     placeholder="Keywords, min. 3, max. 10"
+                    minTags={3}
                     maxTags={10}
                     id="keywords"
                     classNames={{
                       tagInputField:
                         "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300 mb-2",
-                      tag: "px-2 py-1 rounded bg-black text-white flex items-center gap-1",
+                      tag: "px-2 py-1 rounded bg-black text-white flex items-center gap-1 text-sm",
                       selected: "flex gap-1 flex-wrap",
                     }}
                   />
