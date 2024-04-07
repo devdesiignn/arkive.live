@@ -11,11 +11,21 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { useEffect, useState } from "react";
-import zxcvbn from "zxcvbn";
-import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import zxcvbn from "zxcvbn";
+
+import {
+  Eye,
+  EyeClosed,
+  Info,
+  SpinnerGap,
+  SignOut,
+} from "@phosphor-icons/react";
+import { PanelLeft } from "lucide-react";
+import { Filter } from "./Sidebar";
 
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 
@@ -57,20 +67,48 @@ function Header(): JSX.Element {
   }, [password]);
 
   return (
-    <header className="flex justify-between items-center px-8 py-2 border-b sticky top-0 z-10 bg-white">
-      <div className="font-black font-serif text-xl underline">
+    <header className="flex justify-between items-center max-[320px]:px-2 px-4 md:px-8 py-2 border-b sticky top-0 z-10 bg-white">
+      <div className="font-black font-serif text-xl underline hidden lg:block">
         <Link to="/home">Archive.</Link>
       </div>
 
-      <div className="basis-2/3 ">
-        <form action="">
+      <Sheet>
+        <SheetTrigger className="lg:hidden">
+          <div className="p-1 sm:p-2 border rounded-lg cursor-pointer hover:bg-zinc-50 transition-colors">
+            <PanelLeft />
+          </div>
+        </SheetTrigger>
+        <SheetContent side="left" className="lg:hidden flex flex-col gap-8">
+          <div className="font-black font-serif text-xl underline">
+            <Link to="/home">Archive.</Link>
+          </div>
+
+          <Filter />
+
+          <div className="mt-auto">
+            <Link
+              to="/auth/login"
+              className="flex items-center gap-2 text-base text-red-500 p-2 font-medium"
+            >
+              <SignOut weight="bold" size={20} /> Log out
+            </Link>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <div className="basis-2/3">
+        <form>
           <div className="flex items-center gap-2">
             <Input
               type="search"
               placeholder="Search for Title, Keywords, Authors..."
               className="h-12 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-2 focus-visible:border-gray-700"
             />
-            <Button type="submit" className="px-8 h-12 font-semibold">
+
+            <Button
+              type="submit"
+              className="hidden sm:inline-flex sm:px-4 md:px-6 lg:px-8 h-12 font-semibold"
+            >
               Search
             </Button>
           </div>
@@ -80,13 +118,13 @@ function Header(): JSX.Element {
       <div>
         <Dialog>
           <DialogTrigger asChild>
-            <Avatar className="cursor-pointer">
+            <Avatar className="cursor-pointer w-8 h-8 sm:w-10 sm:h-10">
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>MH</AvatarFallback>
             </Avatar>
           </DialogTrigger>
 
-          <DialogContent>
+          <DialogContent className="w-11/12 max-w-[600px]">
             <DialogHeader className="mb-4">
               <DialogTitle className="text-xl">Edit profile</DialogTitle>
               <DialogDescription>
@@ -95,8 +133,8 @@ function Header(): JSX.Element {
             </DialogHeader>
 
             <form onSubmit={handleSubmit}>
-              <div className="flex gap-4 mb-4">
-                <div className="flex flex-col gap-2 basis-1/2">
+              {/* <div className="flex gap-4 mb-4 flex-wrap md:flex-nowrap">
+                <div className="flex flex-col gap-2 w-full lg:basis-1/2">
                   <Label htmlFor="fname">First Name</Label>
                   <Input
                     type="text"
@@ -106,7 +144,7 @@ function Header(): JSX.Element {
                   ></Input>
                 </div>
 
-                <div className="flex flex-col gap-2 basis-1/2">
+                <div className="flex flex-col gap-2 w-full lg:basis-1/2">
                   <Label htmlFor="lname">Last Name</Label>
                   <Input
                     type="text"
@@ -115,7 +153,7 @@ function Header(): JSX.Element {
                     required
                   ></Input>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex flex-col gap-2 mb-4">
                 <Label htmlFor="email">Email Address</Label>
@@ -129,7 +167,7 @@ function Header(): JSX.Element {
 
               <div className="flex flex-col gap-2 mb-4">
                 <Label htmlFor="password">Password</Label>
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-2 sm:gap-4 items-center">
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create Password"
@@ -163,7 +201,7 @@ function Header(): JSX.Element {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="password">Confirm Password</Label>
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-2 sm:gap-4 items-center">
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm Password"

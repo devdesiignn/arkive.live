@@ -34,8 +34,8 @@ import handleDownload from "@/helper/fileDownloader";
 
 function TopbarView(): JSX.Element {
   return (
-    <div className="p-2 bg-white border rounded-lg flex justify-between items-center text-sm">
-      <div className="flex gap-2 items-center basis-1/3">
+    <div className="p-2 bg-white border rounded-lg flex justify-between items-center text-sm flex-wrap sm:flex-nowrap gap-4">
+      <div className="flex gap-2 items-center w-full sm:basis-1/2 md:basis-1/3">
         <p className="shrink-0">Sort By:</p>
 
         <Select>
@@ -49,10 +49,11 @@ function TopbarView(): JSX.Element {
         </Select>
       </div>
 
-      <Button className="p-4 font-medium">
+      <Button className="p-4 font-medium w-full sm:w-fit">
         <Link to="/project/upload" className="flex items-center gap-2 ">
           <UploadSimple weight="bold" size={20} />
-          Upload your Research Project
+          <span className="hidden sm:block">Upload your Research Project</span>
+          <span className="sm:hidden">Upload your Project</span>
         </Link>
       </Button>
     </div>
@@ -66,7 +67,7 @@ function ResultsView(): JSX.Element {
         return (
           <Card key={mockThesis.id}>
             <CardHeader className="gap-4">
-              <CardTitle className="hover:underline">
+              <CardTitle className="hover:underline text-xl sm:text-2xl">
                 <Link
                   to={`/projects/${mockThesis.id}`}
                   target="_blank"
@@ -82,11 +83,13 @@ function ResultsView(): JSX.Element {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>{mockThesis.abstract.split("\n\n")[0]}</p>
+              <p className="text-sm sm:text-base">
+                {mockThesis.abstract.split("\n\n")[0]}
+              </p>
             </CardContent>
             <CardFooter>
               <Button
-                className="text-sm flex gap-2 px-6 py-3 font-semibold"
+                className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
                 onClick={() => {
                   handleDownload({
                     filePath: mockThesis.documentUrl,
@@ -107,31 +110,34 @@ function ResultsView(): JSX.Element {
 
 function PaginationView(): JSX.Element {
   return (
-    <div className="w-full flex items-center justify-between mx-auto px-8 py-2 text-sm mt-auto">
-      <p>
+    <div className="w-full flex items-center justify-between mx-auto sm:px-4 md:px-8 text-sm mt-auto">
+      <p className="hidden sm:block">
         Showing <span className="font-medium">1</span> of 20
       </p>
 
-      <div>
+      <div className="w-full sm:w-fit">
         <Pagination>
-          <PaginationContent>
+          <PaginationContent className="w-full">
             <PaginationItem>
               <PaginationPrevious href="#" />
             </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+
+            <div className="hidden sm:flex flex-row items-center gap-1">
+              <PaginationItem>
+                <PaginationLink href="#" isActive>
+                  1
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            </div>
             <PaginationItem>
               <PaginationNext href="#" />
             </PaginationItem>

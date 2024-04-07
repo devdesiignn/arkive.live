@@ -20,7 +20,7 @@ function Error404() {
           className="p-3 sm:p-6 flex text-lg sm:text-xl lg:text-2xl font-medium"
           asChild
         >
-          <Link to="/auth/login" className="flex items-center">
+          <Link to="/home" className="flex items-center">
             Here's an exit <ArrowUpRight weight="bold" />
           </Link>
         </Button>

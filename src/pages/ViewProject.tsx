@@ -33,15 +33,15 @@ function ViewProject(): JSX.Element {
   usePageTitle(thesis?.title);
 
   return (
-    <div className="bg-white py-8">
+    <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">
       <Card className="w-11/12 max-w-[800px] mx-auto">
         <CardHeader className="gap-2">
-          <CardTitle>{thesis?.title}</CardTitle>
-          <CardDescription className="flex items-center justify-between text-base ">
+          <CardTitle className="text-xl sm:text-2xl">{thesis?.title}</CardTitle>
+          <CardDescription className="flex items-center justify-between text-sm sm:text-base flex-wrap gap-2">
             <div className="flex items-center text-black">
               <HoverCard>
                 <HoverCardTrigger>
-                  <p className="font-semibold text-base">
+                  <p className="font-medium sm:font-semibold text-base">
                     Author:{" "}
                     <span className="underline cursor-pointer">
                       {thesis?.author.fullName}

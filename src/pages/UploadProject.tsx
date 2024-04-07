@@ -77,7 +77,7 @@ function UploadProject(): JSX.Element {
   }, [toast]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center py-8">
+    <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center ">
       <Card className="w-11/12 max-w-[600px] mx-auto">
         <CardHeader className="gap-4">
           <CardTitle>Upload your Research Project</CardTitle>
@@ -216,7 +216,7 @@ function UploadProject(): JSX.Element {
                   <Label htmlFor="abstract">Abstract</Label>
                   <Textarea
                     className="min-h-[160px]"
-                    placeholder="e.g. In this thesis, the application of machine learning algorithms in image recognition tasks is thoroughly investigated. With the increasing prevalence of digital imagery in various fields, the need for accurate and efficient image recognition systems has become paramount."
+                    placeholder="e.g. In this thesis, the application of machine learning algorithms in image recognition tasks is thoroughly investigated."
                     id="abstract"
                     required
                   ></Textarea>

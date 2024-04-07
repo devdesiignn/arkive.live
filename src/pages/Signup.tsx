@@ -74,16 +74,16 @@ function Signup(): JSX.Element {
   }, [toast]);
 
   return (
-    <div className="bg-white w-full h-screen flex items-center justify-center">
-      <Card className="w-11/12 max-w-[500px] mx-auto">
+    <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">
+      <Card className="w-11/12 max-w-[600px] mx-auto">
         <CardHeader>
           <CardTitle>Create new account</CardTitle>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="flex gap-4 mb-4">
-              <div className="flex flex-col gap-2 basis-1/2">
+            <div className="flex gap-4 mb-4 flex-wrap md:flex-nowrap">
+              <div className="flex flex-col gap-2 w-full md:basis-1/2">
                 <Label htmlFor="fname">First Name</Label>
                 <Input
                   type="text"
@@ -93,7 +93,7 @@ function Signup(): JSX.Element {
                 ></Input>
               </div>
 
-              <div className="flex flex-col gap-2 basis-1/2">
+              <div className="flex flex-col gap-2 w-full md:basis-1/2">
                 <Label htmlFor="lname">Last Name</Label>
                 <Input
                   type="text"
@@ -116,7 +116,7 @@ function Signup(): JSX.Element {
 
             <div className="flex flex-col gap-2 mb-4">
               <Label htmlFor="password">Password</Label>
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-2 sm:gap-4 items-center">
                 <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="Create Password"
@@ -147,7 +147,7 @@ function Signup(): JSX.Element {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password">Confirm Password</Label>
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-2 sm:gap-4 items-center">
                 <Input
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm Password"

@@ -16,11 +16,11 @@ import { Tag } from "react-tag-input";
 
 import KeywordInput from "@/components/KeywordInput";
 
-function Filter(): JSX.Element {
+export function Filter(): JSX.Element {
   const [keywords, setKeywords] = useState<Tag[]>([]);
 
   return (
-    <div className="sticky top-[80px]">
+    <div>
       <p className="font-semibold text-lg flex justify-between items-center">
         Filters <FunnelSimple size={24} />
       </p>
@@ -111,13 +111,13 @@ function Filter(): JSX.Element {
 
 function Sidebar(): JSX.Element {
   return (
-    <aside className="w-[400px] p-3">
+    <aside className="w-1/4 p-3 shrink-0 max-w-[300px] hidden lg:block">
       <Filter />
 
-      <div className="mt-[65%] sticky top-[500px]">
+      <div>
         <Link
           to="/auth/login"
-          className="flex items-center gap-2 text-base text-red-500 p-2 font-medium"
+          className="flex items-center gap-2 text-base text-red-500 p-2 font-medium mt-[50%]"
         >
           <SignOut weight="bold" size={20} /> Log out
         </Link>

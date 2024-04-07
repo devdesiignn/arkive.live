@@ -48,8 +48,8 @@ function Login(): JSX.Element {
   }, [toast]);
 
   return (
-    <div className="bg-white w-full h-screen flex items-center justify-center">
-      <Card className="w-11/12 max-w-[500px] mx-auto">
+    <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">
+      <Card className="w-11/12 max-w-[600px] mx-auto">
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
         </CardHeader>
@@ -68,7 +68,7 @@ function Login(): JSX.Element {
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="password">Password</Label>
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-2 sm:gap-4 items-center">
                 <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
