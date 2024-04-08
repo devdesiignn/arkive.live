@@ -77,7 +77,7 @@ export function Filter(): JSX.Element {
                   PhD
                   <Checkbox
                     id="phd"
-                    v
+                    checked={phd}
                     onCheckedChange={(value) => setPhd(value)}
                   />
                 </label>
