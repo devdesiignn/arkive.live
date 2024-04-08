@@ -21,8 +21,11 @@ function SetPassword(): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // ENTRIES
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
+
+  console.log("Password", password, "Confirm Password", confirmPassword);
 
   const [strength, setStrength] = useState<Strength>(0);
 
@@ -43,6 +46,11 @@ function SetPassword(): JSX.Element {
   ) {
     // Prevent full reload
     e.preventDefault();
+
+    if (!password || !confirmPassword) {
+      setSubmit(false);
+      return;
+    }
 
     // disable submit button
     setSubmit(true);

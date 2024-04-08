@@ -11,9 +11,24 @@ async function handleDownload({
     }
 
     const response = await fetch(filePath);
-    const blob = await response.blob();
+    // console.log(response);
 
-    const fileExtension = response.url.slice(-3);
+    const blob = await response.blob();
+    // console.log(blob);
+
+    let fileExtension;
+
+    switch (blob.type) {
+      case "application/pdf":
+        fileExtension = "pdf";
+        break;
+    }
+
+    // console.log(fileExtension);
+
+    // const parts = response.url.split(".");
+    // const fileExtension = response.url.slice(-3);
+    // const fileExtension = parts[parts.length - 1];
 
     const blobUrl = window.URL.createObjectURL(blob);
     const link = document.createElement("a");

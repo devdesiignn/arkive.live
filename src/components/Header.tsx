@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import zxcvbn from "zxcvbn";
 
@@ -28,19 +28,38 @@ import { PanelLeft } from "lucide-react";
 import { Filter } from "./Sidebar";
 
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
+import { HomeContext } from "@/pages/Home";
 
 type Strength = 0 | 1 | 2 | 3;
 
 function Header(): JSX.Element {
+  const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [submit, setSubmit] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // ENTRIES
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  // const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const [password, setPassword] = useState(String);
-  const [confirmPassword, setConfirmPassword] = useState(String);
+  console.log(
+    "First Name",
+    firstName,
+    "Last Name",
+    lastName,
+    "Email",
+    email,
+    "Password",
+    password
+  );
 
   const [strength, setStrength] = useState<Strength>(0);
+
+  const { searchParam, setSearchParam, handleSearch } =
+    useContext(HomeContext)!;
 
   function handleSubmit(
     e:
@@ -50,6 +69,11 @@ function Header(): JSX.Element {
   ) {
     // Prevent full reload
     e.preventDefault();
+
+    if (!firstName || !lastName || !email || !password) {
+      setSubmit(false);
+      return;
+    }
 
     // disable submit button
     setSubmit(true);
@@ -97,12 +121,14 @@ function Header(): JSX.Element {
       </Sheet>
 
       <div className="basis-2/3">
-        <form>
+        <form onSubmit={handleSearch}>
           <div className="flex items-center gap-2">
             <Input
               type="search"
               placeholder="Search for Title, Keywords, Authors..."
               className="h-12 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-2 focus-visible:border-gray-700"
+              value={searchParam}
+              onChange={(event) => setSearchParam(event.target.value)}
             />
 
             <Button
@@ -133,7 +159,7 @@ function Header(): JSX.Element {
             </DialogHeader>
 
             <form onSubmit={handleSubmit}>
-              {/* <div className="flex gap-4 mb-4 flex-wrap md:flex-nowrap">
+              <div className="flex gap-4 mb-4 flex-wrap md:flex-nowrap">
                 <div className="flex flex-col gap-2 w-full lg:basis-1/2">
                   <Label htmlFor="fname">First Name</Label>
                   <Input
@@ -141,6 +167,8 @@ function Header(): JSX.Element {
                     placeholder="First Name"
                     id="fname"
                     required
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
                   ></Input>
                 </div>
 
@@ -151,9 +179,11 @@ function Header(): JSX.Element {
                     placeholder="Last Name"
                     id="lname"
                     required
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
                   ></Input>
                 </div>
-              </div> */}
+              </div>
 
               <div className="flex flex-col gap-2 mb-4">
                 <Label htmlFor="email">Email Address</Label>
@@ -162,6 +192,8 @@ function Header(): JSX.Element {
                   placeholder="Email Address"
                   id="email"
                   required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 ></Input>
               </div>
 
@@ -199,7 +231,7 @@ function Header(): JSX.Element {
                 )}
               </div>
 
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <Label htmlFor="password">Confirm Password</Label>
                 <div className="flex gap-2 sm:gap-4 items-center">
                   <Input
@@ -237,7 +269,7 @@ function Header(): JSX.Element {
                       <Info weight="fill" /> Passwords do not match!
                     </p>
                   )}
-              </div>
+              </div> */}
 
               <DialogFooter className="mt-10">
                 <Button type="submit" className="w-full" disabled={submit}>

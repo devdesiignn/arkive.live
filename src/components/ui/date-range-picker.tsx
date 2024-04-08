@@ -1,5 +1,4 @@
-import { addDays, format } from "date-fns";
-import { DateRange } from "react-day-picker";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -10,15 +9,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useContext } from "react";
+
+import { HomeContext } from "@/pages/Home";
 
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2020, 0, 1),
-    to: addDays(new Date(2021, 0, 1), 364),
-  });
+  const { date, setDate } = useContext(HomeContext)!;
 
   return (
     <div className={cn("grid gap-4", className)}>

@@ -37,7 +37,80 @@ function UploadProject(): JSX.Element {
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
+
+  // ENTRIES
+  const [title, setTitle] = useState<string>("");
   const [keywords, setKeywords] = useState<Tag[]>([]);
+  const [abstract, setAbstract] = useState<string>("");
+  const [projectFile, setProjectFile] = useState<File | null>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
+
+  // TO-DO: remember to set Author name
+  const [degreeType, setDegreeType] = useState<string>("");
+  const [degreeProgram, setDegreeProgram] = useState<string>("");
+  const [department, setDepartment] = useState<string>("");
+  const [faculty, setFaculty] = useState<string>("");
+  const [institution, setInstitution] = useState<string>("");
+
+  console.log(
+    "Title",
+    title,
+
+    "Keywords",
+    keywords,
+
+    "Abstract",
+    abstract,
+
+    "Project File",
+    projectFile,
+
+    "File Url",
+    projectFileUrl,
+
+    "Degree Type",
+    degreeType,
+
+    "Degree Program",
+    degreeProgram,
+
+    "Department",
+    department,
+
+    "Faculty",
+    faculty,
+
+    "Institution",
+    institution
+  );
+
+  function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files || event.target.files.length === 0) {
+      return;
+    }
+
+    const selectedFile = event.target.files[0];
+    const fileSizeInBytes = selectedFile.size;
+    const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+    // Check if the file size exceeds 5MB
+    if (fileSizeInMB > 5) {
+      event.target.value = "";
+
+      toast({
+        title: "File Size Exceeded",
+        description:
+          "We apologize, but the file size exceeds the allowed limit for uploading your research project. Please check your file size and try again. We regret any inconvenience this may cause.",
+        variant: "destructive",
+      });
+
+      return;
+    }
+
+    setProjectFile(selectedFile);
+  }
 
   function handleSubmit(
     e:
@@ -47,6 +120,21 @@ function UploadProject(): JSX.Element {
   ) {
     // Prevent full reload
     e.preventDefault();
+
+    if (
+      !title ||
+      keywords.length < 3 ||
+      !abstract ||
+      !projectFileUrl ||
+      !degreeType ||
+      !degreeProgram ||
+      !department ||
+      !faculty ||
+      !institution
+    ) {
+      setSubmit(false);
+      return;
+    }
 
     // disable submit button
     setSubmit(true);
@@ -106,7 +194,7 @@ function UploadProject(): JSX.Element {
 
                 <div className="flex flex-col gap-2 mb-4">
                   <Label htmlFor="degreeType">Degree Type</Label>
-                  <Select>
+                  <Select onValueChange={(value) => setDegreeType(value)}>
                     <SelectTrigger className="ring-0 ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
                       <SelectValue placeholder="Degree Type" />
                     </SelectTrigger>
@@ -127,6 +215,8 @@ function UploadProject(): JSX.Element {
                     placeholder="e.g. Computer Science"
                     id="program"
                     required
+                    value={degreeProgram}
+                    onChange={(event) => setDegreeProgram(event.target.value)}
                   ></Input>
                 </div>
 
@@ -137,6 +227,8 @@ function UploadProject(): JSX.Element {
                     placeholder="e.g. Department of Computer Science"
                     id="department"
                     required
+                    value={department}
+                    onChange={(event) => setDepartment(event.target.value)}
                   ></Input>
                 </div>
 
@@ -147,6 +239,8 @@ function UploadProject(): JSX.Element {
                     placeholder="e.g. Faculty of Communication and Information Sciences"
                     id="faculty"
                     required
+                    value={faculty}
+                    onChange={(event) => setFaculty(event.target.value)}
                   ></Input>
                 </div>
 
@@ -157,6 +251,8 @@ function UploadProject(): JSX.Element {
                     placeholder="e.g. University of Ilorin"
                     id="institution"
                     required
+                    value={institution}
+                    onChange={(event) => setInstitution(event.target.value)}
                   ></Input>
                 </div>
 
@@ -182,6 +278,8 @@ function UploadProject(): JSX.Element {
                     placeholder="Project Title"
                     id="title"
                     required
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
                   ></Input>
                 </div>
 
@@ -219,19 +317,40 @@ function UploadProject(): JSX.Element {
                     placeholder="e.g. In this thesis, the application of machine learning algorithms in image recognition tasks is thoroughly investigated."
                     id="abstract"
                     required
+                    value={abstract}
+                    onChange={(event) => setAbstract(event.target.value)}
                   ></Textarea>
                 </div>
 
                 <div className="flex flex-col gap-2 mb-4">
                   <Label htmlFor="file">Project File</Label>
-                  <Input type="file" accept=".pdf" required></Input>
+                  <Input
+                    type="file"
+                    accept=".pdf"
+                    required
+                    onChange={handleFileSelection}
+                  ></Input>
                   <p className="text-sm text-gray-500 flex gap-1 items-center">
                     <Info weight="fill" /> Acceptable format (PDF)*
                   </p>
                 </div>
 
                 <div className="mt-10">
-                  <Button className="w-full" onClick={() => setNext(true)}>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      if (
+                        !title ||
+                        keywords.length < 3 ||
+                        !abstract ||
+                        !projectFile
+                      ) {
+                        return;
+                      }
+
+                      setNext(true);
+                    }}
+                  >
                     Next
                   </Button>
                 </div>

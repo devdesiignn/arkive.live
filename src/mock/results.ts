@@ -1,5 +1,5 @@
 // Define interfaces
-interface Thesis {
+export interface Thesis {
   id: string;
   title: string;
   abstract: string;

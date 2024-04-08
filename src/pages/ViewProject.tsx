@@ -74,7 +74,7 @@ function ViewProject(): JSX.Element {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 text-sm sm:text-base">
             {thesis?.abstract.split("\n").map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}

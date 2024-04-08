@@ -15,6 +15,11 @@ function Reset(): JSX.Element {
 
   const [submit, setSubmit] = useState(false);
 
+  // ENTRIES
+  const [email, setEmail] = useState<string>("");
+
+  console.log("Reset Email", email);
+
   const { toast } = useToast();
 
   // RESET REQUEST SUCCESSFUL
@@ -45,6 +50,11 @@ function Reset(): JSX.Element {
     // Prevent full reload
     e.preventDefault();
 
+    if (!email) {
+      setSubmit(false);
+      return;
+    }
+
     // disable submit button
     setSubmit(true);
 
@@ -70,6 +80,8 @@ function Reset(): JSX.Element {
                 placeholder="Email Address"
                 id="email"
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               ></Input>
             </div>
 

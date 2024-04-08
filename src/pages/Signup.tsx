@@ -25,8 +25,25 @@ function Signup(): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [password, setPassword] = useState(String);
-  const [confirmPassword, setConfirmPassword] = useState(String);
+  // ENTRIES
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  console.log(
+    "First Name",
+    firstName,
+    "Last Name",
+    lastName,
+    "Email",
+    email,
+    "Password",
+    password,
+    "Confirm Password",
+    confirmPassword
+  );
 
   const [strength, setStrength] = useState<Strength>(0);
 
@@ -38,6 +55,11 @@ function Signup(): JSX.Element {
   ) {
     // Prevent full reload
     e.preventDefault();
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setSubmit(false);
+      return;
+    }
 
     // disable submit button
     setSubmit(true);
@@ -90,6 +112,8 @@ function Signup(): JSX.Element {
                   placeholder="First Name"
                   id="fname"
                   required
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
                 ></Input>
               </div>
 
@@ -100,6 +124,8 @@ function Signup(): JSX.Element {
                   placeholder="Last Name"
                   id="lname"
                   required
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
                 ></Input>
               </div>
             </div>
@@ -111,6 +137,8 @@ function Signup(): JSX.Element {
                 placeholder="Email Address"
                 id="email"
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               ></Input>
             </div>
 

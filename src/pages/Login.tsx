@@ -19,6 +19,12 @@ function Login(): JSX.Element {
   const [submit, setSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // ENTRIES
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  console.log("Email", email, "Password", password);
+
   function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
@@ -28,10 +34,15 @@ function Login(): JSX.Element {
     // Prevent full reload
     e.preventDefault();
 
+    if (!email || !password) {
+      setSubmit(false);
+      return;
+    }
+
     // disable submit button
     setSubmit(true);
 
-    // Sign Up logic
+    // Login logic
 
     // Average time to sign up
     setTimeout(() => setSubmit(false), 5000);
@@ -63,6 +74,8 @@ function Login(): JSX.Element {
                 placeholder="Email Address"
                 id="email"
                 required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               ></Input>
             </div>
 
@@ -75,6 +88,8 @@ function Login(): JSX.Element {
                   id="password"
                   className="relative"
                   required
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                 ></Input>
 
                 {showPassword ? (

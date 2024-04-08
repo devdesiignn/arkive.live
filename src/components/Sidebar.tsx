@@ -9,15 +9,23 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 
 import { FunnelSimple, SignOut } from "@phosphor-icons/react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { useState } from "react";
-import { Tag } from "react-tag-input";
-
 import KeywordInput from "@/components/KeywordInput";
+import { HomeContext } from "@/pages/Home";
 
 export function Filter(): JSX.Element {
-  const [keywords, setKeywords] = useState<Tag[]>([]);
+  const {
+    bachelors,
+    setBachelors,
+    masters,
+    setMasters,
+    phd,
+    setPhd,
+    keywords,
+    setKeywords,
+  } = useContext(HomeContext)!;
 
   return (
     <div>
@@ -43,7 +51,11 @@ export function Filter(): JSX.Element {
                   className="flex items-center justify-between py-2"
                 >
                   Bachelor's
-                  <Checkbox id="bachelors" />
+                  <Checkbox
+                    id="bachelors"
+                    checked={bachelors}
+                    onCheckedChange={(value) => setBachelors(value)}
+                  />
                 </label>
 
                 <label
@@ -51,7 +63,11 @@ export function Filter(): JSX.Element {
                   className="flex items-center justify-between py-2"
                 >
                   Master's
-                  <Checkbox id="masters" />
+                  <Checkbox
+                    id="masters"
+                    checked={masters}
+                    onCheckedChange={(value) => setMasters(value)}
+                  />
                 </label>
 
                 <label
@@ -59,7 +75,11 @@ export function Filter(): JSX.Element {
                   className="flex items-center justify-between py-2"
                 >
                   PhD
-                  <Checkbox id="phd" />
+                  <Checkbox
+                    id="phd"
+                    v
+                    onCheckedChange={(value) => setPhd(value)}
+                  />
                 </label>
               </div>
             </AccordionContent>

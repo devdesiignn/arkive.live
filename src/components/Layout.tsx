@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Separator } from "@/components/ui/separator";
 
 import Header from "@/components/Header";
-import Filter from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 
 function Layout({ children }: { children: ReactNode }): JSX.Element {
   return (
@@ -10,7 +10,7 @@ function Layout({ children }: { children: ReactNode }): JSX.Element {
       <Header />
 
       <div className="flex min-h-screen">
-        <Filter />
+        <Sidebar />
 
         <Separator orientation="vertical" />
 
