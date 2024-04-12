@@ -1,4 +1,4 @@
-import { supabase } from "@/config/supabaseConfig";
+import { supabase } from "@/utils/supabase";
 import { StorageError } from "@supabase/storage-js";
 
 async function handleDownload({

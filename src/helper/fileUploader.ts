@@ -1,4 +1,4 @@
-import { supabase } from "@/config/supabaseConfig";
+import { supabase } from "@/utils/supabase";
 import { StorageError } from "@supabase/storage-js";
 import { v4 as uuidv4 } from "uuid";
 
