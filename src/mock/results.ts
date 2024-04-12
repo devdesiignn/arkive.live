@@ -1,4 +1,5 @@
-// Define interfaces
+import { Faker, en, en_NG } from "@faker-js/faker";
+
 export interface Thesis {
   id: string;
   title: string;
@@ -26,30 +27,39 @@ interface Metadata {
   dateUploaded: Date;
 }
 
+const degreeTypes = ["Bachelor's", "Master's", "PhD"];
+const programs = [
+  "Computer Science",
+  "Electrical Engineering",
+  "Mechanical Engineering",
+  "Physics",
+];
+const departments = ["Computer Science", "Engineering", "Physics"];
+const faculties = ["Faculty of Science", "Faculty of Engineering"];
+
+// Create a new instance of Faker
+const faker = new Faker({ locale: [en_NG, en] });
+
 // Generate mock data for a single thesis
 function generateMockThesis(index: number): Thesis {
   return {
     id: (index + 1).toString(),
-    title: "Exploring Machine Learning Algorithms for Image Recognition",
+    title: faker.lorem.sentence(),
     author: {
-      fullName: "John Doe",
-      email: "john.doe@example.com",
+      fullName: faker.person.fullName(),
+      email: faker.internet.email(),
     },
-    abstract: `In this thesis, the application of machine learning algorithms in image recognition tasks is thoroughly investigated. With the increasing prevalence of digital imagery in various fields, the need for accurate and efficient image recognition systems has become paramount. This research aims to contribute to this field by exploring the effectiveness of different machine learning algorithms in addressing the complexities inherent in image recognition.
-
-    The study commences by elucidating fundamental concepts in machine learning, providing an extensive overview of algorithms such as convolutional neural networks (CNNs), support vector machines (SVMs), and decision trees. Through meticulous experimentation and analysis, the capabilities of these algorithms in identifying patterns and features within images are scrutinized.
-      
-    Furthermore, the research delves into the challenges encountered in image recognition, including occlusion, illumination variations, and intra-class variability. Novel techniques for mitigating these challenges are proposed and evaluated, with the goal of enhancing the robustness and accuracy of image recognition systems.`,
-    keywords: ["Machine Learning", "Image Recognition", "Deep Learning"],
+    abstract: faker.lorem.paragraphs(),
+    keywords: [faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
     degree: {
-      type: "Master's",
-      program: "Computer Science",
-      department: "Department of Computer Science",
-      faculty: "Faculty of Communication and Information Sciences",
+      type: faker.helpers.arrayElement(degreeTypes),
+      program: faker.helpers.arrayElement(programs),
+      department: faker.helpers.arrayElement(departments),
+      faculty: faker.helpers.arrayElement(faculties),
     },
-    documentUrl: "https://example.com/thesis.pdf",
+    documentUrl: "research-projects-bucket/documents/123.pdf",
     metadata: {
-      dateUploaded: new Date(),
+      dateUploaded: faker.date.recent(),
     },
   };
 }

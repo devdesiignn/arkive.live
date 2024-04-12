@@ -1,45 +1,47 @@
+import { supabase } from "@/config/supabaseConfig";
+import { StorageError } from "@supabase/storage-js";
+
 async function handleDownload({
   filePath,
   fileName,
 }: {
   filePath?: string;
   fileName?: string;
-}) {
+}): Promise<void> {
   try {
     if (!filePath) {
       throw new Error("File Path is missing");
     }
 
-    const response = await fetch(filePath);
-    // console.log(response);
+    const [bucket, folder, file] = filePath.split("/");
+    // console.log(bucket, folder, file);
 
-    const blob = await response.blob();
-    // console.log(blob);
+    const { data, error }: { data: Blob | null; error: StorageError | null } =
+      await supabase.storage.from(bucket).download(`${folder}/${file}`);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    // console.log("data", data);
 
     let fileExtension;
-
-    switch (blob.type) {
+    switch (data?.type) {
       case "application/pdf":
         fileExtension = "pdf";
         break;
     }
-
     // console.log(fileExtension);
 
-    // const parts = response.url.split(".");
-    // const fileExtension = response.url.slice(-3);
-    // const fileExtension = parts[parts.length - 1];
-
-    const blobUrl = window.URL.createObjectURL(blob);
+    const dataUrl = window.URL.createObjectURL(data!);
     const link = document.createElement("a");
-    link.href = blobUrl;
+    link.href = dataUrl;
 
     link.download = `${fileName}.${fileExtension}`;
 
     link.click();
 
     setTimeout(() => {
-      window.URL.revokeObjectURL(blobUrl);
+      window.URL.revokeObjectURL(dataUrl);
     }, 0);
   } catch (error) {
     console.error(error);

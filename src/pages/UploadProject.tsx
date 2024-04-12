@@ -23,12 +23,13 @@ import { Separator } from "@/components/ui/separator";
 import { Info, SpinnerGap } from "@phosphor-icons/react";
 
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { Tag } from "react-tag-input";
 
 import KeywordInput from "@/components/KeywordInput";
 import usePageTitle from "@/hooks/usePageTitle";
+import { uploadFile } from "@/helper/fileUploader";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
@@ -45,7 +46,7 @@ function UploadProject(): JSX.Element {
   const [projectFile, setProjectFile] = useState<File | null>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
+  // const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
 
   // TO-DO: remember to set Author name
   const [degreeType, setDegreeType] = useState<string>("");
@@ -54,37 +55,34 @@ function UploadProject(): JSX.Element {
   const [faculty, setFaculty] = useState<string>("");
   const [institution, setInstitution] = useState<string>("");
 
-  console.log(
-    "Title",
-    title,
+  // console.log(
+  //   "Title",
+  //   title,
 
-    "Keywords",
-    keywords,
+  //   "Keywords",
+  //   keywords,
 
-    "Abstract",
-    abstract,
+  //   "Abstract",
+  //   abstract,
 
-    "Project File",
-    projectFile,
+  //   "Project File",
+  //   projectFile,
 
-    "File Url",
-    projectFileUrl,
+  //   "Degree Type",
+  //   degreeType,
 
-    "Degree Type",
-    degreeType,
+  //   "Degree Program",
+  //   degreeProgram,
 
-    "Degree Program",
-    degreeProgram,
+  //   "Department",
+  //   department,
 
-    "Department",
-    department,
+  //   "Faculty",
+  //   faculty,
 
-    "Faculty",
-    faculty,
-
-    "Institution",
-    institution
-  );
+  //   "Institution",
+  //   institution
+  // );
 
   function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files || event.target.files.length === 0) {
@@ -112,7 +110,7 @@ function UploadProject(): JSX.Element {
     setProjectFile(selectedFile);
   }
 
-  function handleSubmit(
+  async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
@@ -121,48 +119,64 @@ function UploadProject(): JSX.Element {
     // Prevent full reload
     e.preventDefault();
 
-    if (
-      !title ||
-      keywords.length < 3 ||
-      !abstract ||
-      !projectFileUrl ||
-      !degreeType ||
-      !degreeProgram ||
-      !department ||
-      !faculty ||
-      !institution
-    ) {
-      setSubmit(false);
-      return;
+    if (keywords.length < 3) {
+      toast({
+        title: "Minimum Keyword Length",
+        description: "Please enter at least 3 keywords.",
+        variant: "destructive",
+      });
+    }
+
+    try {
+      setSubmit(true);
+
+      const FileUrlorError = await uploadFile(projectFile);
+      // console.log(FileUrlorError?.data);
+
+      if (!FileUrlorError.status) {
+        console.error("file upload error", FileUrlorError.error);
+        setSubmit(false);
+        return;
+      }
+
+      if (
+        !title ||
+        keywords.length < 3 ||
+        !abstract ||
+        !degreeType ||
+        !degreeProgram ||
+        !department ||
+        !faculty ||
+        !institution
+      ) {
+        setSubmit(false);
+        return;
+      }
+
+      // Upload logic
+      // down here
+
+      // UPLOAD SUCCESS
+      toast({
+        title: "Upload Successful",
+        description:
+          "Your Research Project has been successfully uploaded. Thank you for contributing to our archive! If you have any questions or need further assistance, please feel free to contact us.",
+      });
+    } catch (error) {
+      console.error(error);
+
+      // UPLOAD FAILED
+      toast({
+        title: "Upload Failed",
+        description:
+          "We're sorry, but there was an issue with uploading your Research Project. Please double-check your file and try again. We apologize for any inconvenience.",
+        variant: "destructive",
+      });
     }
 
     // disable submit button
-    setSubmit(true);
-
-    // Sign Up logic
-
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
+    setSubmit(false);
   }
-
-  // UPLOAD SUCCESS
-  useEffect(() => {
-    toast({
-      title: "Upload Successful",
-      description:
-        "Your Research Project has been successfully uploaded. Thank you for contributing to our archive! If you have any questions or need further assistance, please feel free to contact us.",
-    });
-  }, [toast]);
-
-  // UPLOAD FAILED
-  useEffect(() => {
-    toast({
-      title: "Upload Failed",
-      description:
-        "We're sorry, but there was an issue with uploading your Research Project. Please double-check your file and try again. We apologize for any inconvenience.",
-      variant: "destructive",
-    });
-  }, [toast]);
 
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center ">
