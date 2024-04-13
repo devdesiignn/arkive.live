@@ -57,7 +57,7 @@ function generateMockThesis(index: number): Thesis {
       department: faker.helpers.arrayElement(departments),
       faculty: faker.helpers.arrayElement(faculties),
     },
-    documentUrl: "research-projects-bucket/documents/123.pdf",
+    documentUrl: faker.internet.url(),
     metadata: {
       dateUploaded: faker.date.recent(),
     },

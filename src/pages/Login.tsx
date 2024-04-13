@@ -4,17 +4,20 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { AuthError } from "@supabase/supabase-js";
 
 import { Eye, EyeClosed, SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
+import { supabase } from "@/utils/supabase";
 
 function Login(): JSX.Element {
   usePageTitle("Login");
 
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [submit, setSubmit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -23,40 +26,71 @@ function Login(): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  console.log("Email", email, "Password", password);
+  // console.log("Email", email, "Password", password);
 
-  function handleSubmit(
+  async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
       | React.FormEvent<HTMLButtonElement>
-  ) {
+  ): Promise<void> {
     // Prevent full reload
     e.preventDefault();
 
     if (!email || !password) {
-      setSubmit(false);
-      return;
+      throw new AuthError("All fields are required.");
     }
 
-    // disable submit button
-    setSubmit(true);
+    try {
+      setSubmit(true);
 
-    // Login logic
+      // Login logic
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
+      if (error) {
+        throw new AuthError(error.message, error.status);
+      }
+
+      // console.log("Data:", data);
+
+      // LOGIN SUCCESS
+      toast({
+        title: "Login Successful",
+        description: "Welcome back! You have successfully logged in.",
+        variant: "default",
+      });
+
+      // NAVIGATE TO HOME
+      if (data && data.session && data.session.access_token) {
+        // User is authenticated
+        navigate("/home");
+      }
+    } catch (error) {
+      // console.error(error);
+
+      if (error instanceof AuthError) {
+        if (error.message === "Invalid login credentials") {
+          // INVALID CREDENTIALS
+          toast({
+            title: "Invalid Login Credentials",
+            description:
+              "The email and password combination you entered is incorrect. Please double-check your credentials and try again.",
+            variant: "destructive",
+          });
+        }
+      }
+    } finally {
+      // DISABLE SUBMIT SPINNER
+      setSubmit(false);
+
+      // CLEAR INPUTS
+      setEmail("");
+      setPassword("");
+    }
   }
-
-  // ACCOUNT DOES NOT EXIST
-  useEffect(() => {
-    toast({
-      title: "Account Not Found!",
-      description:
-        "Sorry, the email provided isn't associated with any account. Please verify the email or sign up to create one.",
-      variant: "destructive",
-    });
-  }, [toast]);
 
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">

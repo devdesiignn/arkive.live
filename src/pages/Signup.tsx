@@ -7,13 +7,20 @@ import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
+import { AuthError } from "@supabase/supabase-js";
 
 import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
+import { supabase } from "@/utils/supabase";
 
 type Strength = 0 | 1 | 2 | 3;
+
+// interface SignupResponse {
+//   data?: { user: User | null; session: Session | null };
+//   error?: AuthError;
+// }
 
 function Signup(): JSX.Element {
   usePageTitle("Create Account");
@@ -32,43 +39,20 @@ function Signup(): JSX.Element {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  console.log(
-    "First Name",
-    firstName,
-    "Last Name",
-    lastName,
-    "Email",
-    email,
-    "Password",
-    password,
-    "Confirm Password",
-    confirmPassword
-  );
+  // console.log(
+  //   "First Name",
+  //   firstName,
+  //   "Last Name",
+  //   lastName,
+  //   "Email",
+  //   email,
+  //   "Password",
+  //   password,
+  //   "Confirm Password",
+  //   confirmPassword
+  // );
 
   const [strength, setStrength] = useState<Strength>(0);
-
-  function handleSubmit(
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement>
-      | React.FormEvent<HTMLButtonElement>
-  ) {
-    // Prevent full reload
-    e.preventDefault();
-
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setSubmit(false);
-      return;
-    }
-
-    // disable submit button
-    setSubmit(true);
-
-    // Sign Up logic
-
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
-  }
 
   useEffect(() => {
     setStrength(zxcvbn(password).score as Strength);
@@ -76,24 +60,74 @@ function Signup(): JSX.Element {
     return () => setStrength(0);
   }, [password]);
 
-  // VERIFY YOUR ACCOUNT
-  useEffect(() => {
-    toast({
-      title: "Verify Your Email",
-      description:
-        "Thank you for signing up! Please check your inbox for a verification email. Once verified, you can log in and access your account.",
-    });
-  }, [toast]);
+  async function handleSubmit(
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLButtonElement>
+  ): Promise<void> {
+    // Prevent full reload
+    e.preventDefault();
 
-  // ACCOUNT ALREADY EXIST
-  useEffect(() => {
-    toast({
-      title: "Account Already Exists!",
-      description:
-        "Sorry, but an account with this email already exists. Please try signing in or use a different email address.",
-      variant: "destructive",
-    });
-  }, [toast]);
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      throw new AuthError("All fields are required.");
+    }
+
+    try {
+      setSubmit(true);
+
+      // Sign Up logic
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: "http://localhost:5173/auth/login",
+          data: {
+            firstName,
+            lastName,
+          },
+        },
+      });
+
+      if (error) {
+        throw new AuthError(error.message, error.status);
+      }
+
+      // console.log("Data:", data);
+
+      // TRIGGER VERIFY TOAST
+      toast({
+        title: "Verify Your Email",
+        description:
+          "Thank you for signing up! Please check your inbox for a verification email. Once verified, you can log in and access your account.",
+      });
+    } catch (error) {
+      // console.log(error);
+
+      if (error instanceof AuthError) {
+        if (error.message === "User already registered") {
+          // ACCOUNT ALREADY EXIST
+          toast({
+            title: "Account Already Exists!",
+            description:
+              "Sorry, but an account with this email already exists. Please try signing in or use a different email address.",
+            variant: "destructive",
+          });
+        }
+      }
+    } finally {
+      // DISABLE SUBMIT SPINNER
+      setSubmit(false);
+
+      // CLEAR INPUTS
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    }
+  }
 
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">

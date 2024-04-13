@@ -127,6 +127,19 @@ function UploadProject(): JSX.Element {
       });
     }
 
+    if (
+      !title ||
+      keywords.length < 3 ||
+      !abstract ||
+      !degreeType ||
+      !degreeProgram ||
+      !department ||
+      !faculty ||
+      !institution
+    ) {
+      return;
+    }
+
     try {
       setSubmit(true);
 
@@ -135,20 +148,6 @@ function UploadProject(): JSX.Element {
 
       if (!FileUrlorError.status) {
         console.error("file upload error", FileUrlorError.error);
-        setSubmit(false);
-        return;
-      }
-
-      if (
-        !title ||
-        keywords.length < 3 ||
-        !abstract ||
-        !degreeType ||
-        !degreeProgram ||
-        !department ||
-        !faculty ||
-        !institution
-      ) {
         setSubmit(false);
         return;
       }

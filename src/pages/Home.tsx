@@ -2,12 +2,15 @@ import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
 import mockThesisData, { Thesis } from "@/mock/results";
+import { supabase } from "@/utils/supabase";
 
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { Tag } from "react-tag-input";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { AuthError, User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
 
 interface HomeContextType {
   searchParam: string;
@@ -31,6 +34,8 @@ interface HomeContextType {
   setKeywords: React.Dispatch<React.SetStateAction<Tag[]>>;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+  user: User | undefined;
+
   // Add more properties as needed
 }
 
@@ -38,6 +43,10 @@ export const HomeContext = createContext<HomeContextType | null>(null);
 
 function Home(): JSX.Element {
   usePageTitle("Home");
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   const [searchParam, setSearchParam] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("");
@@ -52,12 +61,36 @@ function Home(): JSX.Element {
     to: addDays(new Date(), 0),
   });
 
-  console.log("Sort By", sortBy);
-  console.log("Search Param", searchParam);
-  console.log("Mock Thesis Data", mockThesisData);
-  console.log("Bachelors", bachelors, "Masters", masters, "PhD", phd);
-  console.log("Keywords", keywords);
-  console.log("Date", date);
+  // console.log("Sort By", sortBy);
+  // console.log("Search Param", searchParam);
+  // console.log("Mock Thesis Data", mockThesisData);
+  // console.log("Bachelors", bachelors, "Masters", masters, "PhD", phd);
+  // console.log("Keywords", keywords);
+  // console.log("Date", date);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(() => {
+      (async function getUser(): Promise<void> {
+        try {
+          const { data, error } = await supabase.auth.getSession();
+
+          if (error) {
+            throw new AuthError(error.message, error.status);
+          }
+          // console.log("Data:Home ", data);
+
+          if (data && data?.session && data?.session.access_token) {
+            navigate("/home");
+            setUser(data.session?.user);
+          } else {
+            navigate("/auth/login");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    });
+  }, [navigate]);
 
   function handleSearch(e: { preventDefault: () => void }): void {
     // Prevent full reload
@@ -85,6 +118,7 @@ function Home(): JSX.Element {
         setKeywords: setKeywords,
         date: date,
         setDate: setDate,
+        user: user,
       }}
     >
       <Layout>

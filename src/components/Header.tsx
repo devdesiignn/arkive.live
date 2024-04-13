@@ -29,10 +29,18 @@ import { Filter } from "./Sidebar";
 
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { HomeContext } from "@/pages/Home";
+import { supabase } from "@/utils/supabase";
+import { AuthError } from "@supabase/supabase-js";
 
 type Strength = 0 | 1 | 2 | 3;
 
 function Header(): JSX.Element {
+  const [strength, setStrength] = useState<Strength>(0);
+
+  const { searchParam, setSearchParam, handleSearch, user } =
+    useContext(HomeContext)!;
+  // console.log(user);
+
   const [showPassword, setShowPassword] = useState(false);
   // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -45,23 +53,18 @@ function Header(): JSX.Element {
   const [password, setPassword] = useState<string>("");
   // const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  console.log(
-    "First Name",
-    firstName,
-    "Last Name",
-    lastName,
-    "Email",
-    email,
-    "Password",
-    password
-  );
+  // console.log(
+  //   "First Name",
+  //   firstName,
+  //   "Last Name",
+  //   lastName,
+  //   "Email",
+  //   email,
+  //   "Password",
+  //   password
+  // );
 
-  const [strength, setStrength] = useState<Strength>(0);
-
-  const { searchParam, setSearchParam, handleSearch } =
-    useContext(HomeContext)!;
-
-  function handleSubmit(
+  async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
@@ -70,18 +73,37 @@ function Header(): JSX.Element {
     // Prevent full reload
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !password) {
-      setSubmit(false);
+    if (!firstName && !lastName && !email && !password) {
       return;
     }
 
-    // disable submit button
-    setSubmit(true);
+    try {
+      setSubmit(true);
 
-    // Sign Up logic
+      const { error } = await supabase.auth.updateUser({
+        ...(email && { email }),
+        ...(password && { password }),
+        ...(firstName && { data: { firstName } }),
+        ...(lastName && { data: { lastName } }),
+      });
 
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
+      if (error) {
+        throw new AuthError(error.message, error.status);
+      }
+
+      // console.log("Data:Update", data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // DISABLE SUBMIT SPINNER
+      setSubmit(false);
+
+      // CLEAR INPUTS
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    }
   }
 
   useEffect(() => {
@@ -144,17 +166,27 @@ function Header(): JSX.Element {
       <div>
         <Dialog>
           <DialogTrigger asChild>
-            <Avatar className="cursor-pointer w-8 h-8 sm:w-10 sm:h-10">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>MH</AvatarFallback>
+            <Avatar className="cursor-pointer border-2 hover:bg-gray-100 md:w-12 md:h-12">
+              <AvatarImage
+                src={`https://api.dicebear.com/8.x/notionists/svg?scale=140&flip=true&seed=${user?.email}`}
+              />
+              <AvatarFallback>
+                {user?.user_metadata?.firstName.charAt(0)}
+                {user?.user_metadata?.lastName.charAt(0)}
+              </AvatarFallback>
             </Avatar>
           </DialogTrigger>
 
           <DialogContent className="w-11/12 max-w-[600px]">
             <DialogHeader className="mb-4">
               <DialogTitle className="text-xl">Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
+              <DialogDescription className="flex flex-col gap-2">
+                <span>
+                  Make changes to your profile here. Click save when you're
+                  done.
+                </span>
+
+                <span>Leave any field you don't wish to update empty.*</span>
               </DialogDescription>
             </DialogHeader>
 
@@ -164,9 +196,8 @@ function Header(): JSX.Element {
                   <Label htmlFor="fname">First Name</Label>
                   <Input
                     type="text"
-                    placeholder="First Name"
+                    placeholder={user?.user_metadata?.firstName}
                     id="fname"
-                    required
                     value={firstName}
                     onChange={(event) => setFirstName(event.target.value)}
                   ></Input>
@@ -176,9 +207,8 @@ function Header(): JSX.Element {
                   <Label htmlFor="lname">Last Name</Label>
                   <Input
                     type="text"
-                    placeholder="Last Name"
+                    placeholder={user?.user_metadata?.lastName}
                     id="lname"
-                    required
                     value={lastName}
                     onChange={(event) => setLastName(event.target.value)}
                   ></Input>
@@ -189,9 +219,8 @@ function Header(): JSX.Element {
                 <Label htmlFor="email">Email Address</Label>
                 <Input
                   type="email"
-                  placeholder="Email Address"
+                  placeholder={user?.email}
                   id="email"
-                  required
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 ></Input>
@@ -202,11 +231,10 @@ function Header(): JSX.Element {
                 <div className="flex gap-2 sm:gap-4 items-center">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Create Password"
+                    placeholder="Change Password"
                     id="password"
                     className="relative"
                     minLength={8}
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   ></Input>
