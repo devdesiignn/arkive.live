@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 import KeywordInput from "@/components/KeywordInput";
 import { HomeContext } from "@/pages/Home";
+import handleLogout from "@/helper/handleLogout";
 
 export function Filter(): JSX.Element {
   const {
@@ -138,6 +139,7 @@ function Sidebar(): JSX.Element {
         <Link
           to="/auth/login"
           className="flex items-center gap-2 text-base text-red-500 p-2 font-medium mt-[50%]"
+          onClick={handleLogout}
         >
           <SignOut weight="bold" size={20} /> Log out
         </Link>

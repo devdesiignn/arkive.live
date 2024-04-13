@@ -32,6 +32,7 @@ import { Filter } from "./Sidebar";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { HomeContext } from "@/pages/Home";
 import { supabase } from "@/utils/supabase";
+import handleLogout from "@/helper/handleLogout";
 
 type Strength = 0 | 1 | 2 | 3;
 
@@ -174,6 +175,7 @@ function Header(): JSX.Element {
             <Link
               to="/auth/login"
               className="flex items-center gap-2 text-base text-red-500 p-2 font-medium"
+              onClick={handleLogout}
             >
               <SignOut weight="bold" size={20} /> Log out
             </Link>
