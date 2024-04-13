@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useToast } from "@/components/ui/use-toast";
 
 import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import zxcvbn from "zxcvbn";
+import { AuthError } from "@supabase/supabase-js";
 
 import {
   Eye,
@@ -25,16 +27,20 @@ import {
   SignOut,
 } from "@phosphor-icons/react";
 import { PanelLeft } from "lucide-react";
-import { Filter } from "./Sidebar";
 
+import { Filter } from "./Sidebar";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { HomeContext } from "@/pages/Home";
 import { supabase } from "@/utils/supabase";
-import { AuthError } from "@supabase/supabase-js";
 
 type Strength = 0 | 1 | 2 | 3;
 
 function Header(): JSX.Element {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+
   const [strength, setStrength] = useState<Strength>(0);
 
   const { searchParam, setSearchParam, handleSearch, user } =
@@ -80,21 +86,54 @@ function Header(): JSX.Element {
     try {
       setSubmit(true);
 
-      const { error } = await supabase.auth.updateUser({
-        ...(email && { email }),
-        ...(password && { password }),
-        ...(firstName && { data: { firstName } }),
-        ...(lastName && { data: { lastName } }),
-      });
+      const { data, error } = await supabase.auth.updateUser(
+        {
+          ...(email && { email }),
+          ...(password && { password }),
+
+          ...(firstName && { data: { firstName } }),
+          ...(lastName && { data: { lastName } }),
+        },
+        { emailRedirectTo: "http://localhost:5173/auth/login" }
+      );
 
       if (error) {
         throw new AuthError(error.message, error.status);
+      }
+
+      if (email !== "" && data?.user?.email) {
+        // AUTO SIGNOUT USER
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          throw new AuthError(error.message, error.status);
+        }
+
+        // TRIGGER TOAST
+        toast({
+          title: "Email Updated",
+          description:
+            "A confirmation email has been sent to your new email address. Please sign in using your new email after confirming the change.",
+          variant: "default",
+        });
+
+        // NAVIGATE TO LOGIN
+        navigate("/auth/login");
+      } else {
+        toast({
+          title: "Account Updated",
+          description:
+            "Your account information has been successfully updated.",
+          variant: "default",
+        });
       }
 
       // console.log("Data:Update", data);
     } catch (error) {
       console.error(error);
     } finally {
+      // CLOSE DIALOG
+      setOpen(false);
+
       // DISABLE SUBMIT SPINNER
       setSubmit(false);
 
@@ -164,8 +203,8 @@ function Header(): JSX.Element {
       </div>
 
       <div>
-        <Dialog>
-          <DialogTrigger asChild>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>
             <Avatar className="cursor-pointer border-2 hover:bg-gray-100 md:w-12 md:h-12">
               <AvatarImage
                 src={`https://api.dicebear.com/8.x/notionists/svg?scale=140&flip=true&seed=${user?.email}`}
