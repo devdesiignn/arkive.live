@@ -10,6 +10,7 @@ import { AuthError } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 
 import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
+
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { supabase } from "@/utils/supabase";
@@ -18,6 +19,11 @@ type Strength = 0 | 1 | 2 | 3;
 
 function SetPassword(): JSX.Element {
   usePageTitle("Set New Password");
+
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const [strength, setStrength] = useState<Strength>(0);
 
   const [submit, setSubmit] = useState(false);
 
@@ -28,12 +34,7 @@ function SetPassword(): JSX.Element {
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
 
-  console.log("Password", password, "Confirm Password", confirmPassword);
-
-  const [strength, setStrength] = useState<Strength>(0);
-
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  // console.log("Password", password, "Confirm Password", confirmPassword);
 
   async function handleSubmit(
     e:
