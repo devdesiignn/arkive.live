@@ -40,7 +40,7 @@ function Reset(): JSX.Element {
     try {
       setSubmit(true);
 
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${baseURL}/auth/set-password`,
       });
 
@@ -48,11 +48,7 @@ function Reset(): JSX.Element {
         throw new AuthError(error.message, error.status);
       }
 
-      if (Object.keys(data).length === 0) {
-        throw new AuthError("Account Not Found!");
-      }
-
-      console.log("Data:Reset", data);
+      // console.log("Data:Reset", data);
 
       // RESET REQUEST SUCCESSFUL
       toast({

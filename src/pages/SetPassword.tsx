@@ -50,9 +50,11 @@ function SetPassword(): JSX.Element {
     }
 
     try {
+      setSubmit(true);
+
       supabase.auth.onAuthStateChange(async (event) => {
         if (event == "PASSWORD_RECOVERY") {
-          const { data, error } = await supabase.auth.updateUser({
+          const { error } = await supabase.auth.updateUser({
             password,
           });
 
@@ -60,7 +62,7 @@ function SetPassword(): JSX.Element {
             throw new AuthError(error.message, error.status);
           }
 
-          console.log("Data:SetPassword", data);
+          // console.log("Data:SetPassword", data);
 
           toast({
             title: "Password Reset Successful",
