@@ -45,7 +45,6 @@ function UploadProject(): JSX.Element {
   const [abstract, setAbstract] = useState<string>("");
   const [projectFile, setProjectFile] = useState<File | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
 
   // TO-DO: remember to set Author name

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { WithContext as ReactTags, Tag } from "react-tag-input";
 
 interface KeywordInputProps {
