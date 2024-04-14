@@ -14,6 +14,7 @@ import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { supabase } from "@/utils/supabase";
+import { baseURL } from "@/utils/baseurl";
 
 type Strength = 0 | 1 | 2 | 3;
 
@@ -82,7 +83,7 @@ function Signup(): JSX.Element {
         email,
         password,
         options: {
-          emailRedirectTo: "http://localhost:5173/auth/login",
+          emailRedirectTo: `${baseURL}/auth/login`,
           data: {
             firstName,
             lastName,

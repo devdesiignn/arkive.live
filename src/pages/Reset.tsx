@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpinnerGap } from "@phosphor-icons/react";
+import { AuthError } from "@supabase/supabase-js";
 
 import usePageTitle from "@/hooks/usePageTitle";
+import { baseURL } from "@/utils/baseurl";
+import { supabase } from "@/utils/supabase";
 
 function Reset(): JSX.Element {
   usePageTitle("Reset Password");
@@ -17,31 +20,11 @@ function Reset(): JSX.Element {
 
   // ENTRIES
   const [email, setEmail] = useState<string>("");
-
-  console.log("Reset Email", email);
+  // console.log("Reset Email", email);
 
   const { toast } = useToast();
 
-  // RESET REQUEST SUCCESSFUL
-  useEffect(() => {
-    toast({
-      title: "Password Reset Request",
-      description:
-        "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
-    });
-  }, [toast]);
-
-  // ACCOUNT DOES NOT EXIST
-  useEffect(() => {
-    toast({
-      title: "Account Not Found!",
-      description:
-        "Sorry, the email provided isn't associated with any account. Please verify the email or sign up to create one.",
-      variant: "destructive",
-    });
-  }, [toast]);
-
-  function handleSubmit(
+  async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
@@ -51,17 +34,49 @@ function Reset(): JSX.Element {
     e.preventDefault();
 
     if (!email) {
-      setSubmit(false);
       return;
     }
 
-    // disable submit button
-    setSubmit(true);
+    try {
+      setSubmit(true);
 
-    // Sign Up logic
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${baseURL}/auth/set-password`,
+      });
 
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
+      if (error) {
+        throw new AuthError(error.message, error.status);
+      }
+
+      if (Object.keys(data).length === 0) {
+        throw new AuthError("Account Not Found!");
+      }
+
+      console.log("Data:Reset", data);
+
+      // RESET REQUEST SUCCESSFUL
+      toast({
+        title: "Password Reset Request",
+        description:
+          "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
+      });
+    } catch (error) {
+      console.error(error);
+
+      // ACCOUNT DOES NOT EXIST
+      toast({
+        title: "Account Not Found!",
+        description:
+          "Sorry, the email provided isn't associated with any account. Please verify the email or sign up to create one.",
+        variant: "destructive",
+      });
+    } finally {
+      // DISABLE SUBMIT BTN
+      setSubmit(false);
+
+      // CLEAR INPUTS
+      setEmail("");
+    }
   }
 
   return (

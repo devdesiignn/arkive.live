@@ -33,6 +33,7 @@ import ShowPasswordStrength from "@/components/ShowPasswordStrength";
 import { HomeContext } from "@/pages/Home";
 import { supabase } from "@/utils/supabase";
 import handleLogout from "@/helper/handleLogout";
+import { baseURL } from "@/utils/baseurl";
 
 type Strength = 0 | 1 | 2 | 3;
 
@@ -95,7 +96,7 @@ function Header(): JSX.Element {
           ...(firstName && { data: { firstName } }),
           ...(lastName && { data: { lastName } }),
         },
-        { emailRedirectTo: "http://localhost:5173/auth/login" }
+        { emailRedirectTo: `${baseURL}/auth/login` }
       );
 
       if (error) {

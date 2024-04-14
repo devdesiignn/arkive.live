@@ -6,10 +6,13 @@ import { useToast } from "@/components/ui/use-toast";
 
 import { useState, useEffect } from "react";
 import zxcvbn from "zxcvbn";
+import { AuthError } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
 
 import { Eye, EyeClosed, Info, SpinnerGap } from "@phosphor-icons/react";
 import usePageTitle from "@/hooks/usePageTitle";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
+import { supabase } from "@/utils/supabase";
 
 type Strength = 0 | 1 | 2 | 3;
 
@@ -30,15 +33,9 @@ function SetPassword(): JSX.Element {
   const [strength, setStrength] = useState<Strength>(0);
 
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    toast({
-      title: "Password Reset Successful",
-      description: "Your password has been successfully reset.",
-    });
-  }, [toast]);
-
-  function handleSubmit(
+  async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
@@ -48,17 +45,48 @@ function SetPassword(): JSX.Element {
     e.preventDefault();
 
     if (!password || !confirmPassword) {
-      setSubmit(false);
       return;
     }
 
-    // disable submit button
-    setSubmit(true);
+    try {
+      supabase.auth.onAuthStateChange(async (event) => {
+        if (event == "PASSWORD_RECOVERY") {
+          const { data, error } = await supabase.auth.updateUser({
+            password,
+          });
 
-    // Sign Up logic
+          if (error) {
+            throw new AuthError(error.message, error.status);
+          }
 
-    // Average time to sign up
-    setTimeout(() => setSubmit(false), 5000);
+          console.log("Data:SetPassword", data);
+
+          toast({
+            title: "Password Reset Successful",
+            description: "Your password has been successfully reset.",
+            variant: "default",
+          });
+
+          // NAVIGATE TO LOGIN
+          navigate("/auth/login");
+        }
+      });
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: "Error Updating Password",
+        description: "There was an error updating your password.",
+        variant: "destructive",
+      });
+    } finally {
+      // DISABLE SUBMIT BTN
+      setSubmit(false);
+
+      // CLEAR INPUTS
+      setPassword("");
+      setConfirmPassword("");
+    }
   }
 
   useEffect(() => {
