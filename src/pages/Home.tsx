@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
@@ -68,27 +69,31 @@ function Home(): JSX.Element {
   // console.log("Keywords", keywords);
   // console.log("Date", date);
 
+  async function getUser(): Promise<void> {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error) {
+        throw new AuthError(error.message, error.status);
+      }
+      // console.log("Data:Home ", data);
+
+      if (data && data?.session && data?.session.access_token) {
+        navigate("/home");
+        setUser(data.session?.user);
+      } else {
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
-    supabase.auth.onAuthStateChange(() => {
-      (async function getUser(): Promise<void> {
-        try {
-          const { data, error } = await supabase.auth.getSession();
+    getUser();
 
-          if (error) {
-            throw new AuthError(error.message, error.status);
-          }
-          // console.log("Data:Home ", data);
-
-          if (data && data?.session && data?.session.access_token) {
-            navigate("/home");
-            setUser(data.session?.user);
-          } else {
-            navigate("/auth/login");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      })();
+    supabase.auth.onAuthStateChange((event) => {
+      if (event === "USER_UPDATED") getUser();
     });
   }, [navigate]);
 
@@ -102,23 +107,23 @@ function Home(): JSX.Element {
   return (
     <HomeContext.Provider
       value={{
-        searchParam: searchParam,
-        setSearchParam: setSearchParam,
-        sortBy: sortBy,
-        setSortBy: setSortBy,
-        handleSearch: handleSearch,
-        mockThesisData: mockThesisData,
-        bachelors: bachelors,
-        setBachelors: setBachelors,
-        masters: masters,
-        setMasters: setMasters,
-        phd: phd,
-        setPhd: setPhd,
-        keywords: keywords,
-        setKeywords: setKeywords,
-        date: date,
-        setDate: setDate,
-        user: user,
+        searchParam,
+        setSearchParam,
+        sortBy,
+        setSortBy,
+        handleSearch,
+        mockThesisData,
+        bachelors,
+        setBachelors,
+        masters,
+        setMasters,
+        phd,
+        setPhd,
+        keywords,
+        setKeywords,
+        date,
+        setDate,
+        user,
       }}
     >
       <Layout>

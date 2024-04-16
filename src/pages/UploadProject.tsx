@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Card,
   CardContent,
@@ -22,19 +23,25 @@ import { Separator } from "@/components/ui/separator";
 
 import { Info, SpinnerGap } from "@phosphor-icons/react";
 
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { AuthError, User } from "@supabase/supabase-js";
 
 import { Tag } from "react-tag-input";
 
 import KeywordInput from "@/components/KeywordInput";
 import usePageTitle from "@/hooks/usePageTitle";
 import { uploadFile } from "@/helper/fileUploader";
+import { supabase } from "@/utils/supabase";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
 
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | undefined>(undefined);
+  // console.log(user);
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -47,7 +54,6 @@ function UploadProject(): JSX.Element {
 
   // const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
 
-  // TO-DO: remember to set Author name
   const [degreeType, setDegreeType] = useState<string>("");
   const [degreeProgram, setDegreeProgram] = useState<string>("");
   const [department, setDepartment] = useState<string>("");
@@ -176,6 +182,27 @@ function UploadProject(): JSX.Element {
     setSubmit(false);
   }
 
+  useEffect(() => {
+    (async function getUser(): Promise<void> {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) {
+          throw new AuthError(error.message, error.status);
+        }
+        // console.log("Data:Home ", data);
+
+        if (data && data?.session && data?.session.access_token) {
+          setUser(data.session?.user);
+        } else {
+          navigate("/auth/login");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [navigate]);
+
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center ">
       <Card className="w-11/12 max-w-[600px] mx-auto">
@@ -196,7 +223,7 @@ function UploadProject(): JSX.Element {
                   <Label htmlFor="author">Author Name</Label>
                   <Input
                     type="text"
-                    value="Muiz Haruna"
+                    value={`${user?.user_metadata.firstName} ${user?.user_metadata.lastName}`}
                     id="author"
                     readOnly={true}
                     disabled={true}
