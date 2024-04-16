@@ -63,26 +63,12 @@ function ViewProject(): JSX.Element {
 
               {thesis?.coAuthors.map((coAuthor, index) => {
                 return (
-                  <HoverCard key={index}>
-                    <HoverCardTrigger>
-                      <p className="font-medium sm:font-semibold text-base">
-                        <span className="underline cursor-pointer">
-                          {coAuthor?.fullName}
-                        </span>
-                      </p>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="text-sm flex flex-col gap-2 w-fit font-medium">
-                      <p>{coAuthor?.fullName}</p>
-                      <p>
-                        <a
-                          href={`mailto:${coAuthor?.email}`}
-                          className="underline"
-                        >
-                          {coAuthor?.email}
-                        </a>
-                      </p>
-                    </HoverCardContent>
-                  </HoverCard>
+                  <p
+                    key={index}
+                    className="font-medium sm:font-semibold text-base"
+                  >
+                    {coAuthor?.fullName}
+                  </p>
                 );
               })}
             </div>
