@@ -29,7 +29,7 @@ function ViewProject(): JSX.Element {
   const thesis = mockThesisData?.find(
     (mockThesis) => mockThesis.id === projectID
   );
-
+  console.log(thesis);
   usePageTitle(thesis?.title);
 
   return (
@@ -37,21 +37,20 @@ function ViewProject(): JSX.Element {
       <Card className="w-11/12 max-w-[800px] mx-auto">
         <CardHeader className="gap-2">
           <CardTitle className="text-xl sm:text-2xl">{thesis?.title}</CardTitle>
-          <CardDescription className="flex items-center justify-between text-sm sm:text-base flex-wrap gap-2">
-            <div className="flex items-center text-black">
+          <CardDescription className="flex items-start justify-between text-sm sm:text-base gap-2">
+            <div className="flex items-center text-black flex-wrap gap-x-2 gap-y-1">
               <HoverCard>
                 <HoverCardTrigger>
                   <p className="font-medium sm:font-semibold text-base">
-                    Author:{" "}
+                    Author(s):{" "}
                     <span className="underline cursor-pointer">
                       {thesis?.author.fullName}
                     </span>
                   </p>
                 </HoverCardTrigger>
-                <HoverCardContent className="text-sm flex flex-col gap-2 w-fit font-medium max-w-[300px]">
-                  <p>Author's Name: {thesis?.author.fullName}</p>
+                <HoverCardContent className="text-sm flex flex-col gap-2 w-fit font-medium">
+                  <p>{thesis?.author.fullName}</p>
                   <p>
-                    Author's Email:{" "}
                     <a
                       href={`mailto:${thesis?.author.email}`}
                       className="underline"
@@ -61,9 +60,34 @@ function ViewProject(): JSX.Element {
                   </p>
                 </HoverCardContent>
               </HoverCard>
+
+              {thesis?.coAuthors.map((coAuthor, index) => {
+                return (
+                  <HoverCard key={index}>
+                    <HoverCardTrigger>
+                      <p className="font-medium sm:font-semibold text-base">
+                        <span className="underline cursor-pointer">
+                          {coAuthor?.fullName}
+                        </span>
+                      </p>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="text-sm flex flex-col gap-2 w-fit font-medium">
+                      <p>{coAuthor?.fullName}</p>
+                      <p>
+                        <a
+                          href={`mailto:${coAuthor?.email}`}
+                          className="underline"
+                        >
+                          {coAuthor?.email}
+                        </a>
+                      </p>
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              })}
             </div>
 
-            <p>
+            <p className="shrink-0">
               Uploaded:{" "}
               {thesis?.metadata.dateUploaded.toLocaleDateString("en-GB", {
                 day: "2-digit",
@@ -81,9 +105,9 @@ function ViewProject(): JSX.Element {
           </div>
 
           <div className="flex flex-wrap gap-1 mt-6">
-            {thesis?.keywords.map((keyword, index) => {
-              return <Badge key={index}>{keyword}</Badge>;
-            })}
+            {thesis?.keywords.map((keyword) => (
+              <Badge key={keyword.id}>{keyword.text}</Badge>
+            ))}
           </div>
         </CardContent>
         <CardFooter>

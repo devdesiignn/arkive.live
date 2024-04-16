@@ -4,12 +4,12 @@ interface KeywordInputProps {
   inputFieldPosition?: "inline" | "top" | "bottom";
   allowDragDrop: boolean;
   labelField: string;
-  allowUnique: boolean;
+  allowUnique?: boolean;
   placeholder: string;
   id: string;
   classNames: object;
-  minTags: number;
-  maxTags: number;
+  minTags?: number;
+  maxTags?: number;
   tags: Tag[];
   setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
 }

@@ -82,9 +82,9 @@ function ResultsView(): JSX.Element {
                 </Link>
               </CardTitle>
               <CardDescription className="flex flex-wrap gap-1">
-                {mockThesis.keywords.map((keyword, index) => {
-                  return <Badge key={index}>{keyword}</Badge>;
-                })}
+                {mockThesis.keywords.map((keyword) => (
+                  <Badge key={keyword.id}>{keyword.text}</Badge>
+                ))}
               </CardDescription>
             </CardHeader>
             <CardContent>

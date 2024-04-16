@@ -44,7 +44,7 @@ function UploadProject(): JSX.Element {
   // console.log(user);
 
   const [submit, setSubmit] = useState(false);
-  const [next, setNext] = useState(false);
+  const [next, setNext] = useState(true);
 
   // ENTRIES
   const [title, setTitle] = useState<string>("");
@@ -53,6 +53,7 @@ function UploadProject(): JSX.Element {
   const [projectFile, setProjectFile] = useState<File | null>(null);
 
   // const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
+  const [coAuthors, setCoAuthors] = useState<Tag[]>([]);
 
   const [degreeType, setDegreeType] = useState<string>("");
   const [degreeProgram, setDegreeProgram] = useState<string>("");
@@ -60,34 +61,37 @@ function UploadProject(): JSX.Element {
   const [faculty, setFaculty] = useState<string>("");
   const [institution, setInstitution] = useState<string>("");
 
-  // console.log(
-  //   "Title",
-  //   title,
+  console.log(
+    "Title",
+    title,
 
-  //   "Keywords",
-  //   keywords,
+    "Keywords",
+    keywords,
 
-  //   "Abstract",
-  //   abstract,
+    "Abstract",
+    abstract,
 
-  //   "Project File",
-  //   projectFile,
+    "Project File",
+    projectFile,
 
-  //   "Degree Type",
-  //   degreeType,
+    "Co-Authors",
+    coAuthors,
 
-  //   "Degree Program",
-  //   degreeProgram,
+    "Degree Type",
+    degreeType,
 
-  //   "Department",
-  //   department,
+    "Degree Program",
+    degreeProgram,
 
-  //   "Faculty",
-  //   faculty,
+    "Department",
+    department,
 
-  //   "Institution",
-  //   institution
-  // );
+    "Faculty",
+    faculty,
+
+    "Institution",
+    institution
+  );
 
   function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files || event.target.files.length === 0) {
@@ -222,6 +226,7 @@ function UploadProject(): JSX.Element {
                 <div className="flex flex-col gap-2 mb-4">
                   <Label htmlFor="author">Author Name</Label>
                   <Input
+                    className="disabled:opacity-80"
                     type="text"
                     value={`${user?.user_metadata.firstName} ${user?.user_metadata.lastName}`}
                     id="author"
@@ -232,8 +237,35 @@ function UploadProject(): JSX.Element {
                 </div>
 
                 <div className="flex flex-col gap-2 mb-4">
+                  <Label htmlFor="keywords">
+                    Co-Authors' Name(s){" "}
+                    <span className="font-normal text-gray-500">
+                      (separate with comma)
+                    </span>
+                  </Label>
+                  <KeywordInput
+                    tags={coAuthors}
+                    setTags={setCoAuthors}
+                    inputFieldPosition="top"
+                    allowDragDrop={false}
+                    labelField="co-author"
+                    placeholder="Co-Authors' Name(s)"
+                    id="co-authors"
+                    classNames={{
+                      tagInputField:
+                        "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300 mb-2",
+                      tag: "px-2 py-1 rounded bg-black text-white flex items-center gap-1 text-sm",
+                      selected: "flex gap-1 flex-wrap",
+                    }}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2 mb-4">
                   <Label htmlFor="degreeType">Degree Type</Label>
-                  <Select onValueChange={(value) => setDegreeType(value)}>
+                  <Select
+                    onValueChange={(value) => setDegreeType(value)}
+                    required={true}
+                  >
                     <SelectTrigger className="ring-0 ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0">
                       <SelectValue placeholder="Degree Type" />
                     </SelectTrigger>
