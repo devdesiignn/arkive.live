@@ -44,7 +44,7 @@ function UploadProject(): JSX.Element {
   // console.log(user);
 
   const [submit, setSubmit] = useState(false);
-  const [next, setNext] = useState(true);
+  const [next, setNext] = useState(false);
 
   // ENTRIES
   const [title, setTitle] = useState<string>("");

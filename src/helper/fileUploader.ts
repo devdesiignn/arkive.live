@@ -13,7 +13,7 @@ export async function uploadFile(file: File | null): Promise<UploadResponse> {
     try {
       const { data, error } = await supabase.storage
         .from("research-projects-bucket")
-        .upload(`documents/${uuidv4()}.pdf`, file);
+        .upload(`research-documents-folder/${uuidv4()}.pdf`, file);
 
       if (error !== null) {
         // Handle error
@@ -42,4 +42,4 @@ export async function uploadFile(file: File | null): Promise<UploadResponse> {
   }
 }
 
-// Data: {path: 'documents/1b744d14-5d78-49ac-9180-67539c57e5cb.pdf', id: '7b8fed9f-ba07-4369-9bb7-a574102d959d', fullPath: 'research-projects-bucket/documents/1b744d14-5d78-49ac-9180-67539c57e5cb.pdf'}
+// Data: {path: 'research-documents-folder/1b744d14-5d78-49ac-9180-67539c57e5cb.pdf', id: '7b8fed9f-ba07-4369-9bb7-a574102d959d', fullPath: 'research-projects-bucket/research-documents-folder/1b744d14-5d78-49ac-9180-67539c57e5cb.pdf'}

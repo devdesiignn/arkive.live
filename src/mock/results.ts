@@ -20,7 +20,6 @@ export interface Author {
 
 export interface CoAuthor {
   fullName: string;
-  email: string;
 }
 
 interface Degree {
@@ -57,7 +56,6 @@ function generateMockThesis(index: number): Thesis {
 
   const coAuthors: CoAuthor[] = Array.from({ length: numCoAuthors }, () => ({
     fullName: faker.person.fullName(),
-    email: faker.internet.email(),
   }));
 
   return {
