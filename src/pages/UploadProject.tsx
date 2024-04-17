@@ -26,6 +26,7 @@ import { Info, SpinnerGap } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { AuthError, User } from "@supabase/supabase-js";
+import { StorageError } from "@supabase/storage-js";
 
 import { Tag } from "react-tag-input";
 
@@ -41,7 +42,7 @@ function UploadProject(): JSX.Element {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | undefined>(undefined);
-  // console.log(user);
+  console.log(user);
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -52,46 +53,12 @@ function UploadProject(): JSX.Element {
   const [abstract, setAbstract] = useState<string>("");
   const [projectFile, setProjectFile] = useState<File | null>(null);
 
-  // const [projectFileUrl, _setProjectFileUrl] = useState<string>("");
   const [coAuthors, setCoAuthors] = useState<Tag[]>([]);
-
   const [degreeType, setDegreeType] = useState<string>("");
   const [degreeProgram, setDegreeProgram] = useState<string>("");
   const [department, setDepartment] = useState<string>("");
   const [faculty, setFaculty] = useState<string>("");
   const [institution, setInstitution] = useState<string>("");
-
-  console.log(
-    "Title",
-    title,
-
-    "Keywords",
-    keywords,
-
-    "Abstract",
-    abstract,
-
-    "Project File",
-    projectFile,
-
-    "Co-Authors",
-    coAuthors,
-
-    "Degree Type",
-    degreeType,
-
-    "Degree Program",
-    degreeProgram,
-
-    "Department",
-    department,
-
-    "Faculty",
-    faculty,
-
-    "Institution",
-    institution
-  );
 
   function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files || event.target.files.length === 0) {
@@ -124,7 +91,7 @@ function UploadProject(): JSX.Element {
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
       | React.FormEvent<HTMLButtonElement>
-  ) {
+  ): Promise<void> {
     // Prevent full reload
     e.preventDefault();
 
@@ -156,13 +123,32 @@ function UploadProject(): JSX.Element {
       // console.log(FileUrlorError?.data);
 
       if (!FileUrlorError.status) {
-        console.error("file upload error", FileUrlorError.error);
-        setSubmit(false);
-        return;
+        throw new StorageError(`${FileUrlorError.error}`);
       }
 
-      // Upload logic
-      // down here
+      const payload: object = {
+        title,
+        abstract,
+        keywords,
+        degree_type: degreeType,
+        degree_program: degreeProgram,
+        degree_department: department,
+        degree_faculty: faculty,
+        document_url: FileUrlorError.data?.fullPath,
+        author_fullname: `${user?.user_metadata.firstName} ${user?.user_metadata.lastName}`,
+        author_email: user?.email,
+        degree_institution: institution,
+        coauthors: coAuthors,
+      };
+
+      // UPLOAD LOGIC
+      const { error } = await supabase
+        .from("research-projects-table")
+        .insert(payload);
+
+      if (error) {
+        throw new Error(error.message);
+      }
 
       // UPLOAD SUCCESS
       toast({
@@ -170,6 +156,21 @@ function UploadProject(): JSX.Element {
         description:
           "Your Research Project has been successfully uploaded. Thank you for contributing to our archive! If you have any questions or need further assistance, please feel free to contact us.",
       });
+
+      // CLEAR INPUTS
+      setTitle("");
+      setKeywords([]);
+      setAbstract("");
+      setProjectFile(null);
+      setCoAuthors([]);
+      setDegreeType("");
+      setDegreeProgram("");
+      setDepartment("");
+      setFaculty("");
+      setInstitution("");
+
+      // NAVIGATE TO HOME
+      navigate("/home");
     } catch (error) {
       console.error(error);
 
@@ -180,10 +181,10 @@ function UploadProject(): JSX.Element {
           "We're sorry, but there was an issue with uploading your Research Project. Please double-check your file and try again. We apologize for any inconvenience.",
         variant: "destructive",
       });
+    } finally {
+      // disable submit button
+      setSubmit(false);
     }
-
-    // disable submit button
-    setSubmit(false);
   }
 
   useEffect(() => {
