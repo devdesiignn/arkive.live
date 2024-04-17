@@ -50,6 +50,9 @@ function Reset(): JSX.Element {
 
       // console.log("Data:Reset", data);
 
+      // CLEAR INPUTS
+      setEmail("");
+
       // RESET REQUEST SUCCESSFUL
       toast({
         title: "Password Reset Request",
@@ -69,9 +72,6 @@ function Reset(): JSX.Element {
     } finally {
       // DISABLE SUBMIT BTN
       setSubmit(false);
-
-      // CLEAR INPUTS
-      setEmail("");
     }
   }
 

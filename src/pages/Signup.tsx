@@ -77,7 +77,7 @@ function Signup(): JSX.Element {
     try {
       setSubmit(true);
 
-      // Sign Up logic
+      // SIGN UP LOGIC
 
       const { error } = await supabase.auth.signUp({
         email,
@@ -96,6 +96,13 @@ function Signup(): JSX.Element {
       }
 
       // console.log("Data:", data);
+
+      // CLEAR INPUTS
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
 
       // TRIGGER VERIFY TOAST
       toast({
@@ -120,13 +127,6 @@ function Signup(): JSX.Element {
     } finally {
       // DISABLE SUBMIT SPINNER
       setSubmit(false);
-
-      // CLEAR INPUTS
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
     }
   }
 

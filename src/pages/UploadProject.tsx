@@ -42,7 +42,7 @@ function UploadProject(): JSX.Element {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | undefined>(undefined);
-  console.log(user);
+  // console.log(user);
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -150,13 +150,6 @@ function UploadProject(): JSX.Element {
         throw new Error(error.message);
       }
 
-      // UPLOAD SUCCESS
-      toast({
-        title: "Upload Successful",
-        description:
-          "Your Research Project has been successfully uploaded. Thank you for contributing to our archive! If you have any questions or need further assistance, please feel free to contact us.",
-      });
-
       // CLEAR INPUTS
       setTitle("");
       setKeywords([]);
@@ -168,6 +161,13 @@ function UploadProject(): JSX.Element {
       setDepartment("");
       setFaculty("");
       setInstitution("");
+
+      // UPLOAD SUCCESS
+      toast({
+        title: "Upload Successful",
+        description:
+          "Your Research Project has been successfully uploaded. Thank you for contributing to our archive! If you have any questions or need further assistance, please feel free to contact us.",
+      });
 
       // NAVIGATE TO HOME
       navigate("/home");
@@ -195,7 +195,7 @@ function UploadProject(): JSX.Element {
         if (error) {
           throw new AuthError(error.message, error.status);
         }
-        // console.log("Data:Home ", data);
+        // console.log("Data:Upload ", data);
 
         if (data && data?.session && data?.session.access_token) {
           setUser(data.session?.user);

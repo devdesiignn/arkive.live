@@ -64,6 +64,10 @@ function SetPassword(): JSX.Element {
 
           // console.log("Data:SetPassword", data);
 
+          // CLEAR INPUTS
+          setPassword("");
+          setConfirmPassword("");
+
           toast({
             title: "Password Reset Successful",
             description: "Your password has been successfully reset.",
@@ -85,10 +89,6 @@ function SetPassword(): JSX.Element {
     } finally {
       // DISABLE SUBMIT BTN
       setSubmit(false);
-
-      // CLEAR INPUTS
-      setPassword("");
-      setConfirmPassword("");
     }
   }
 

@@ -56,6 +56,10 @@ function Login(): JSX.Element {
 
       // console.log("Data:", data);
 
+      // CLEAR INPUTS
+      setEmail("");
+      setPassword("");
+
       // LOGIN SUCCESS
       toast({
         title: "Login Successful",
@@ -85,10 +89,6 @@ function Login(): JSX.Element {
     } finally {
       // DISABLE SUBMIT SPINNER
       setSubmit(false);
-
-      // CLEAR INPUTS
-      setEmail("");
-      setPassword("");
     }
   }
 
