@@ -16,18 +16,17 @@ import {
 
 import { DownloadSimple } from "@phosphor-icons/react";
 
-import usePageTitle from "@/hooks/usePageTitle";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 
-// import mockThesisData from "@/mock/results";
+import usePageTitle from "@/hooks/usePageTitle";
 import handleDownload from "@/helper/fileDownloader";
-import { AppContext } from "@/App";
+import { HomeContext } from "@/pages/Home";
 
 function ViewProject(): JSX.Element {
   const { projectID } = useParams();
 
-  const { researchProjects } = useContext(AppContext)!;
+  const { researchProjects } = useContext(HomeContext)!;
   // console.log(researchProjects);
 
   const project = researchProjects?.find(

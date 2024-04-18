@@ -3,18 +3,15 @@ import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
 import mockThesisData, { Thesis } from "@/mock/results";
+import { ResearchProjectType } from "@/App";
 // import { supabase } from "@/utils/supabase";
-import { AppContext } from "@/App";
-import { Tables } from "@/utils/database";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { Tag } from "react-tag-input";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useNavigate } from "react-router-dom";
-
-type ResearchProjectType = Tables<"research-projects-table">;
 
 interface HomeContextType {
   searchParam: string;
@@ -50,11 +47,37 @@ interface HomeContextType {
 
 export const HomeContext = createContext<HomeContextType | null>(null);
 
+const initialResearchProjects: ResearchProjectType[] = [
+  {
+    abstract: "Lorem ipsum...",
+    author_email: "author@example.com",
+    author_fullname: "John Doe",
+    coauthors: null,
+    date_uploaded: "2022-04-20",
+    degree_department: "Computer Science",
+    degree_faculty: "Faculty of Science",
+    degree_institution: "University of Example",
+    degree_program: "statistics",
+    degree_type: "masters",
+    document_url: "youtube.com",
+    id: "1",
+    keywords: [
+      { id: "dummy", keyword: "dummy" },
+      { id: "dum", keyword: "dum" },
+    ],
+    title: "Example Research Project",
+    user_id: "123456",
+  },
+];
+
 function Home(): JSX.Element {
   usePageTitle("Home");
 
+  const [researchProjects, setResearchProjects] = useState<
+    ResearchProjectType[] | null
+  >(initialResearchProjects);
+
   const navigate = useNavigate();
-  const { researchProjects, setResearchProjects } = useContext(AppContext)!;
 
   const sessionData = sessionStorage.getItem("session");
   const session = sessionData ? JSON.parse(sessionData) : null;

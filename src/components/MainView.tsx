@@ -30,6 +30,12 @@ import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
 
 import handleDownload from "@/helper/fileDownloader";
 import { HomeContext } from "@/pages/Home";
+import NoResults from "@/assets/no_results.webp";
+import { ResearchProjectType } from "@/App";
+
+interface ResultsViewProps {
+  researchProjects: ResearchProjectType[] | null;
+}
 
 function TopbarView(): JSX.Element {
   const { setSortBy } = useContext(HomeContext)!;
@@ -61,57 +67,61 @@ function TopbarView(): JSX.Element {
   );
 }
 
-function ResultsView(): JSX.Element {
-  // const { mockThesisData } = useContext(HomeContext)!;
-  // console.log(mockThesisData)
-
-  const { researchProjects } = useContext(HomeContext)!;
-
-  return (
+function ResultsView({ researchProjects }: ResultsViewProps): JSX.Element {
+  return researchProjects && researchProjects.length > 0 ? (
     <div className="grid grid-cols-1 gap-4">
-      {researchProjects?.map((researchProject) => {
-        return (
-          <Card key={researchProject.id}>
-            <CardHeader className="gap-4">
-              <CardTitle className="hover:underline text-xl sm:text-2xl">
-                <Link
-                  to={`/projects/${researchProject.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {researchProject.title}
-                </Link>
-              </CardTitle>
-              <CardDescription className="flex flex-wrap gap-1">
-                {researchProject.keywords.map((keyword, index) => (
-                  <Badge key={index}>
-                    {(keyword as { keyword?: string }).keyword}
-                  </Badge>
-                ))}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm sm:text-base">
-                {researchProject.abstract.split("\n\n")[0]}
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button
-                className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
-                onClick={() => {
-                  handleDownload({
-                    filePath: researchProject.document_url,
-                    fileName: researchProject.title,
-                  });
-                }}
+      {researchProjects.map((researchProject) => (
+        <Card key={researchProject.id}>
+          <CardHeader className="gap-4">
+            <CardTitle className="hover:underline text-xl sm:text-2xl">
+              <Link
+                to={`/projects/${researchProject.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Download
-                <DownloadSimple weight="bold" size={20} />
-              </Button>
-            </CardFooter>
-          </Card>
-        );
-      })}
+                {researchProject.title}
+              </Link>
+            </CardTitle>
+            <CardDescription className="flex flex-wrap gap-1">
+              {researchProject.keywords.map((keyword, index) => (
+                <Badge key={index}>
+                  {(keyword as { keyword?: string }).keyword}
+                </Badge>
+              ))}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm sm:text-base">
+              {researchProject.abstract.split("\n\n")[0]}
+            </p>
+          </CardContent>
+          <CardFooter>
+            <Button
+              className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
+              onClick={() => {
+                handleDownload({
+                  filePath: researchProject.document_url,
+                  fileName: researchProject.title,
+                });
+              }}
+            >
+              Download
+              <DownloadSimple weight="bold" size={20} />
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  ) : (
+    <div className="flex flex-col justify-center items-center gap-4 py-4">
+      <img
+        src={NoResults}
+        alt="No Results"
+        className="w-48 h-48 sm:w-52 sm:h-52"
+      />
+      <p className="text-lg sm:text-xl font-semibold text-center">
+        No research projects available.
+      </p>
     </div>
   );
 }
@@ -157,13 +167,20 @@ function PaginationView(): JSX.Element {
 }
 
 function MainView(): JSX.Element {
+  // const { mockThesisData } = useContext(HomeContext)!;
+  // console.log(mockThesisData)
+
+  const { researchProjects } = useContext(HomeContext)!;
+
   return (
     <>
       <TopbarView />
 
-      <ResultsView />
+      <ResultsView researchProjects={researchProjects} />
 
-      <PaginationView />
+      {researchProjects && researchProjects.length > 0 ? (
+        <PaginationView />
+      ) : null}
     </>
   );
 }
