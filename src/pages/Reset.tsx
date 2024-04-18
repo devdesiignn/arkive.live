@@ -20,7 +20,6 @@ function Reset(): JSX.Element {
 
   // ENTRIES
   const [email, setEmail] = useState<string>("");
-  // console.log("Reset Email", email);
 
   const { toast } = useToast();
 

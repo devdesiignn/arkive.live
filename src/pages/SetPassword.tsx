@@ -34,7 +34,7 @@ function SetPassword(): JSX.Element {
   const [password, setPassword] = useState(String);
   const [confirmPassword, setConfirmPassword] = useState(String);
 
-  // console.log("Password", password, "Confirm Password", confirmPassword);
+
 
   async function handleSubmit(
     e:

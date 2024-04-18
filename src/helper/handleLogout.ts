@@ -5,6 +5,9 @@ async function handleLogout() {
   try {
     const { error } = await supabase.auth.signOut({ scope: "local" });
 
+    sessionStorage.removeItem("session");
+    sessionStorage.removeItem("user");
+
     if (error) {
       throw new AuthError(error.message, error.status);
     }

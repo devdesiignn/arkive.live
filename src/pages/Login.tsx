@@ -26,8 +26,6 @@ function Login(): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  // console.log("Email", email, "Password", password);
-
   async function handleSubmit(
     e:
       | React.FormEvent<HTMLFormElement>

@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Info, SpinnerGap } from "@phosphor-icons/react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { StorageError } from "@supabase/storage-js";
 
 import { Tag } from "react-tag-input";
@@ -33,17 +33,12 @@ import KeywordInput from "@/components/KeywordInput";
 import usePageTitle from "@/hooks/usePageTitle";
 import { uploadFile } from "@/helper/fileUploader";
 import { supabase } from "@/utils/supabase";
-import { AppContext } from "@/App";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
 
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  // const [user, setUser] = useState<User | undefined>(undefined);
-  const { session, user } = useContext(AppContext)!;
-  // console.log(user, session);
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -60,6 +55,14 @@ function UploadProject(): JSX.Element {
   const [department, setDepartment] = useState<string>("");
   const [faculty, setFaculty] = useState<string>("");
   const [institution, setInstitution] = useState<string>("");
+
+  const sessionData = sessionStorage.getItem("session");
+  const session = sessionData ? JSON.parse(sessionData) : null;
+
+  const userData = sessionStorage.getItem("user");
+  const user =
+    userData && userData !== "undefined" ? JSON.parse(userData) : null;
+  // console.log(session, user);
 
   function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files || event.target.files.length === 0) {
@@ -191,7 +194,6 @@ function UploadProject(): JSX.Element {
   useEffect(() => {
     session && session?.access_token ? null : navigate("/auth/login");
   }, [navigate]);
-
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center ">
       <Card className="w-11/12 max-w-[600px] mx-auto">

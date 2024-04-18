@@ -1,16 +1,12 @@
 import { Toaster } from "@/components/ui/toaster";
 import { createContext, useState, useEffect } from "react";
-import { User, Session, AuthError } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 
 import AppRouter from "./routes";
 import { Tables } from "@/utils/database";
 import { supabase } from "./utils/supabase";
 
 interface AppContextType {
-  user: User | undefined;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  session: Session | null;
-  setSession: React.Dispatch<React.SetStateAction<Session | null>>;
   researchProjects: ResearchProjectType[] | null;
   setResearchProjects: React.Dispatch<
     React.SetStateAction<ResearchProjectType[] | null>
@@ -64,8 +60,6 @@ type ResearchProjectType = Tables<"research-projects-table">;
 export const AppContext = createContext<AppContextType | null>(null);
 
 function App() {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [session, setSession] = useState<Session | null>(null);
   const [researchProjects, setResearchProjects] = useState<
     ResearchProjectType[] | null
   >(null);
@@ -78,8 +72,9 @@ function App() {
         throw new AuthError(error.message, error.status);
       }
 
-      setSession(data?.session);
-      setUser(data.session?.user);
+      // SET USER 
+      sessionStorage.setItem("session", JSON.stringify(data?.session));
+      sessionStorage.setItem("user", JSON.stringify(data?.session?.user));
 
       // console.log("Data:App ", data);
     } catch (error) {
@@ -97,10 +92,6 @@ function App() {
   return (
     <AppContext.Provider
       value={{
-        user,
-        setUser,
-        session,
-        setSession,
         researchProjects,
         setResearchProjects,
       }}

@@ -45,8 +45,12 @@ function Header(): JSX.Element {
 
   const [strength, setStrength] = useState<Strength>(0);
 
-  const { searchParam, setSearchParam, handleSearch, user } =
+  const { searchParam, setSearchParam, handleSearch } =
     useContext(HomeContext)!;
+
+  const userData = sessionStorage.getItem("user");
+  const user =
+    userData && userData !== "undefined" ? JSON.parse(userData) : null;
   // console.log(user);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -59,18 +63,6 @@ function Header(): JSX.Element {
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [confirmPassword, setConfirmPassword] = useState<string>("");
-
-  // console.log(
-  //   "First Name",
-  //   firstName,
-  //   "Last Name",
-  //   lastName,
-  //   "Email",
-  //   email,
-  //   "Password",
-  //   password
-  // );
 
   async function handleSubmit(
     e:

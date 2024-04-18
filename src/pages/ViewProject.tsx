@@ -27,9 +27,8 @@ import { AppContext } from "@/App";
 function ViewProject(): JSX.Element {
   const { projectID } = useParams();
 
-  const { researchProjects, user } = useContext(AppContext)!;
-
-  console.log(researchProjects, user);
+  const { researchProjects } = useContext(AppContext)!;
+  // console.log(researchProjects);
 
   const project = researchProjects?.find(
     (researchProject) => researchProject.id === projectID

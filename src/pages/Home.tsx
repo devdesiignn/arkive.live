@@ -12,26 +12,7 @@ import { Tag } from "react-tag-input";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { User, Session } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
-
-// type ResearchProjectType = {
-//   abstract: string;
-//   author_email: string;
-//   author_fullname: string;
-//   coauthors: Json[] | null;
-//   date_uploaded: string;
-//   degree_department: string;
-//   degree_faculty: string;
-//   degree_institution: string;
-//   degree_program: string;
-//   degree_type: string;
-//   document_url: string;
-//   id: string;
-//   keywords: Json[];
-//   title: string;
-//   user_id: string;
-// };
 
 type ResearchProjectType = Tables<"research-projects-table">;
 
@@ -59,10 +40,6 @@ interface HomeContextType {
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 
   // FROM APPCONTEXT
-  user: User | undefined;
-  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-  session: Session | null;
-  setSession: React.Dispatch<React.SetStateAction<Session | null>>;
   researchProjects: ResearchProjectType[] | null;
   setResearchProjects: React.Dispatch<
     React.SetStateAction<ResearchProjectType[] | null>
@@ -77,14 +54,11 @@ function Home(): JSX.Element {
   usePageTitle("Home");
 
   const navigate = useNavigate();
-  const {
-    user,
-    setUser,
-    session,
-    setSession,
-    researchProjects,
-    setResearchProjects,
-  } = useContext(AppContext)!;
+  const { researchProjects, setResearchProjects } = useContext(AppContext)!;
+
+  const sessionData = sessionStorage.getItem("session");
+  const session = sessionData ? JSON.parse(sessionData) : null;
+  // console.log(session);
 
   const [searchParam, setSearchParam] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("");
@@ -138,10 +112,6 @@ function Home(): JSX.Element {
         setKeywords,
         date,
         setDate,
-        session,
-        setSession,
-        user,
-        setUser,
         researchProjects,
         setResearchProjects,
       }}

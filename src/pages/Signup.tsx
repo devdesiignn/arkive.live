@@ -18,11 +18,6 @@ import { baseURL } from "@/utils/baseurl";
 
 type Strength = 0 | 1 | 2 | 3;
 
-// interface SignupResponse {
-//   data?: { user: User | null; session: Session | null };
-//   error?: AuthError;
-// }
-
 function Signup(): JSX.Element {
   usePageTitle("Create Account");
 
@@ -39,19 +34,6 @@ function Signup(): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
-  // console.log(
-  //   "First Name",
-  //   firstName,
-  //   "Last Name",
-  //   lastName,
-  //   "Email",
-  //   email,
-  //   "Password",
-  //   password,
-  //   "Confirm Password",
-  //   confirmPassword
-  // );
 
   const [strength, setStrength] = useState<Strength>(0);
 
