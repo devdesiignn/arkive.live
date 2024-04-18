@@ -52,8 +52,8 @@ function TopbarView(): JSX.Element {
         </Select>
       </div>
 
-      <Button className="p-4 font-medium w-full sm:w-fit">
-        <Link to="/project/upload" className="flex items-center gap-2 ">
+      <Button className="font-medium w-full sm:w-fit">
+        <Link to="/project/upload" className="p-4 flex items-center gap-2 ">
           <UploadSimple weight="bold" size={20} />
           <span className="hidden sm:block">Upload your Research Project</span>
           <span className="sm:hidden">Upload your Project</span>
