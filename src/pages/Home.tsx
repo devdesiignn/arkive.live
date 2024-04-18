@@ -3,15 +3,37 @@ import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
 import mockThesisData, { Thesis } from "@/mock/results";
-import { supabase } from "@/utils/supabase";
+// import { supabase } from "@/utils/supabase";
+import { AppContext } from "@/App";
+import { Tables } from "@/utils/database";
 
-import { createContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { Tag } from "react-tag-input";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { AuthError, User } from "@supabase/supabase-js";
+import { User, Session } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
+
+// type ResearchProjectType = {
+//   abstract: string;
+//   author_email: string;
+//   author_fullname: string;
+//   coauthors: Json[] | null;
+//   date_uploaded: string;
+//   degree_department: string;
+//   degree_faculty: string;
+//   degree_institution: string;
+//   degree_program: string;
+//   degree_type: string;
+//   document_url: string;
+//   id: string;
+//   keywords: Json[];
+//   title: string;
+//   user_id: string;
+// };
+
+type ResearchProjectType = Tables<"research-projects-table">;
 
 interface HomeContextType {
   searchParam: string;
@@ -35,7 +57,16 @@ interface HomeContextType {
   setKeywords: React.Dispatch<React.SetStateAction<Tag[]>>;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+
+  // FROM APPCONTEXT
   user: User | undefined;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  session: Session | null;
+  setSession: React.Dispatch<React.SetStateAction<Session | null>>;
+  researchProjects: ResearchProjectType[] | null;
+  setResearchProjects: React.Dispatch<
+    React.SetStateAction<ResearchProjectType[] | null>
+  >;
 
   // Add more properties as needed
 }
@@ -46,8 +77,14 @@ function Home(): JSX.Element {
   usePageTitle("Home");
 
   const navigate = useNavigate();
-
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const {
+    user,
+    setUser,
+    session,
+    setSession,
+    researchProjects,
+    setResearchProjects,
+  } = useContext(AppContext)!;
 
   const [searchParam, setSearchParam] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("");
@@ -69,40 +106,18 @@ function Home(): JSX.Element {
   // console.log("Keywords", keywords);
   // console.log("Date", date);
 
-  async function getUser(): Promise<void> {
-    try {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (error) {
-        throw new AuthError(error.message, error.status);
-      }
-      // console.log("Data:Home ", data);
-
-      if (data && data?.session && data?.session.access_token) {
-        navigate("/home");
-        setUser(data.session?.user);
-      } else {
-        navigate("/auth/login");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    getUser();
-
-    supabase.auth.onAuthStateChange((event) => {
-      if (event === "USER_UPDATED") getUser();
-    });
-  }, [navigate]);
-
   function handleSearch(e: { preventDefault: () => void }): void {
     // Prevent full reload
     e.preventDefault();
 
     // search logic
   }
+
+  useEffect(() => {
+    session && session?.access_token
+      ? navigate("/home")
+      : navigate("/auth/login");
+  }, [navigate]);
 
   return (
     <HomeContext.Provider
@@ -123,7 +138,12 @@ function Home(): JSX.Element {
         setKeywords,
         date,
         setDate,
+        session,
+        setSession,
         user,
+        setUser,
+        researchProjects,
+        setResearchProjects,
       }}
     >
       <Layout>

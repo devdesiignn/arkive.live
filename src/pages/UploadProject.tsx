@@ -24,8 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Info, SpinnerGap } from "@phosphor-icons/react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { AuthError, User } from "@supabase/supabase-js";
+import { useState, useEffect, useContext } from "react";
 import { StorageError } from "@supabase/storage-js";
 
 import { Tag } from "react-tag-input";
@@ -34,6 +33,7 @@ import KeywordInput from "@/components/KeywordInput";
 import usePageTitle from "@/hooks/usePageTitle";
 import { uploadFile } from "@/helper/fileUploader";
 import { supabase } from "@/utils/supabase";
+import { AppContext } from "@/App";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
@@ -41,8 +41,9 @@ function UploadProject(): JSX.Element {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | undefined>(undefined);
-  // console.log(user);
+  // const [user, setUser] = useState<User | undefined>(undefined);
+  const { session, user } = useContext(AppContext)!;
+  // console.log(user, session);
 
   const [submit, setSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -188,24 +189,7 @@ function UploadProject(): JSX.Element {
   }
 
   useEffect(() => {
-    (async function getUser(): Promise<void> {
-      try {
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error) {
-          throw new AuthError(error.message, error.status);
-        }
-        // console.log("Data:Upload ", data);
-
-        if (data && data?.session && data?.session.access_token) {
-          setUser(data.session?.user);
-        } else {
-          navigate("/auth/login");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    session && session?.access_token ? null : navigate("/auth/login");
   }, [navigate]);
 
   return (

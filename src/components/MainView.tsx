@@ -31,8 +31,6 @@ import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
 import handleDownload from "@/helper/fileDownloader";
 import { HomeContext } from "@/pages/Home";
 
-// console.log(mockThesisData);
-
 function TopbarView(): JSX.Element {
   const { setSortBy } = useContext(HomeContext)!;
 
@@ -64,32 +62,37 @@ function TopbarView(): JSX.Element {
 }
 
 function ResultsView(): JSX.Element {
-  const { mockThesisData } = useContext(HomeContext)!;
+  // const { mockThesisData } = useContext(HomeContext)!;
+  // console.log(mockThesisData)
+
+  const { researchProjects } = useContext(HomeContext)!;
 
   return (
     <div className="grid grid-cols-1 gap-4">
-      {mockThesisData?.map((mockThesis) => {
+      {researchProjects?.map((researchProject) => {
         return (
-          <Card key={mockThesis.id}>
+          <Card key={researchProject.id}>
             <CardHeader className="gap-4">
               <CardTitle className="hover:underline text-xl sm:text-2xl">
                 <Link
-                  to={`/projects/${mockThesis.id}`}
+                  to={`/projects/${researchProject.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {mockThesis.title}
+                  {researchProject.title}
                 </Link>
               </CardTitle>
               <CardDescription className="flex flex-wrap gap-1">
-                {mockThesis.keywords.map((keyword) => (
-                  <Badge key={keyword.id}>{keyword.text}</Badge>
+                {researchProject.keywords.map((keyword, index) => (
+                  <Badge key={index}>
+                    {(keyword as { keyword?: string }).keyword}
+                  </Badge>
                 ))}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm sm:text-base">
-                {mockThesis.abstract.split("\n\n")[0]}
+                {researchProject.abstract.split("\n\n")[0]}
               </p>
             </CardContent>
             <CardFooter>
@@ -97,8 +100,8 @@ function ResultsView(): JSX.Element {
                 className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
                 onClick={() => {
                   handleDownload({
-                    filePath: mockThesis.documentUrl,
-                    fileName: mockThesis.title,
+                    filePath: researchProject.document_url,
+                    fileName: researchProject.title,
                   });
                 }}
               >
