@@ -54,6 +54,10 @@ function Login(): JSX.Element {
 
       // console.log("Data:", data);
 
+      // SET USER
+      sessionStorage.setItem("session", JSON.stringify(data?.session));
+      sessionStorage.setItem("user", JSON.stringify(data?.session?.user));
+
       // CLEAR INPUTS
       setEmail("");
       setPassword("");

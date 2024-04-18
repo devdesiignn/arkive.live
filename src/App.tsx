@@ -72,7 +72,7 @@ function App() {
         throw new AuthError(error.message, error.status);
       }
 
-      // SET USER 
+      // SET USER
       sessionStorage.setItem("session", JSON.stringify(data?.session));
       sessionStorage.setItem("user", JSON.stringify(data?.session?.user));
 
@@ -83,7 +83,7 @@ function App() {
   }
 
   useEffect(() => {
-    getUser();
+    // getUser();
     supabase.auth.onAuthStateChange((event) => {
       if (event === "USER_UPDATED") getUser();
     });
