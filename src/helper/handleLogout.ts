@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import { AuthError } from "@supabase/supabase-js";
 
-async function handleLogout() {
+async function handleLogout(): Promise<void> {
   try {
     const { error } = await supabase.auth.signOut({ scope: "local" });
 

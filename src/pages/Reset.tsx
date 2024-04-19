@@ -28,7 +28,7 @@ function Reset(): JSX.Element {
       | React.FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLButtonElement>
       | React.FormEvent<HTMLButtonElement>
-  ) {
+  ): Promise<void> {
     // Prevent full reload
     e.preventDefault();
 

@@ -47,35 +47,35 @@ interface HomeContextType {
 
 export const HomeContext = createContext<HomeContextType | null>(null);
 
-const initialResearchProjects: ResearchProjectType[] = [
-  {
-    abstract: "Lorem ipsum...",
-    author_email: "author@example.com",
-    author_fullname: "John Doe",
-    coauthors: null,
-    date_uploaded: "2022-04-20",
-    degree_department: "Computer Science",
-    degree_faculty: "Faculty of Science",
-    degree_institution: "University of Example",
-    degree_program: "statistics",
-    degree_type: "masters",
-    document_url: "youtube.com",
-    id: "1",
-    keywords: [
-      { id: "dummy", keyword: "dummy" },
-      { id: "dum", keyword: "dum" },
-    ],
-    title: "Example Research Project",
-    user_id: "123456",
-  },
-];
+// const initialResearchProjects: ResearchProjectType[] = [
+//   {
+//     abstract: "Lorem ipsum...",
+//     author_email: "author@example.com",
+//     author_fullname: "John Doe",
+//     coauthors: null,
+//     date_uploaded: "2022-04-20",
+//     degree_department: "Computer Science",
+//     degree_faculty: "Faculty of Science",
+//     degree_institution: "University of Example",
+//     degree_program: "statistics",
+//     degree_type: "masters",
+//     document_url: "youtube.com",
+//     id: "1",
+//     keywords: [
+//       { id: "dummy", keyword: "dummy" },
+//       { id: "dum", keyword: "dum" },
+//     ],
+//     title: "Example Research Project",
+//     user_id: "123456",
+//   },
+// ];
 
 function Home(): JSX.Element {
   usePageTitle("Home");
 
   const [researchProjects, setResearchProjects] = useState<
     ResearchProjectType[] | null
-  >(initialResearchProjects);
+  >(null);
 
   const navigate = useNavigate();
 
