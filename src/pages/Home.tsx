@@ -79,7 +79,8 @@ function Home(): JSX.Element {
 
   const navigate = useNavigate();
 
-  const sessionData = sessionStorage.getItem("session");
+  // GET SESSION
+  const sessionData = localStorage.getItem("session");
   const session = sessionData ? JSON.parse(sessionData) : null;
   // console.log(session);
 

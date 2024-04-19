@@ -56,10 +56,10 @@ function UploadProject(): JSX.Element {
   const [faculty, setFaculty] = useState<string>("");
   const [institution, setInstitution] = useState<string>("");
 
-  const sessionData = sessionStorage.getItem("session");
+  // GET USER && SESSION
+  const sessionData = localStorage.getItem("session");
   const session = sessionData ? JSON.parse(sessionData) : null;
-
-  const userData = sessionStorage.getItem("user");
+  const userData = localStorage.getItem("user");
   const user =
     userData && userData !== "undefined" ? JSON.parse(userData) : null;
   // console.log(session, user);
@@ -194,6 +194,7 @@ function UploadProject(): JSX.Element {
   useEffect(() => {
     session && session?.access_token ? null : navigate("/auth/login");
   }, [navigate]);
+
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center ">
       <Card className="w-11/12 max-w-[600px] mx-auto">

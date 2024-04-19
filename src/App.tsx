@@ -16,9 +16,9 @@ function App() {
         throw new AuthError(error.message, error.status);
       }
 
-      // SET USER
-      sessionStorage.setItem("session", JSON.stringify(data?.session));
-      sessionStorage.setItem("user", JSON.stringify(data?.session?.user));
+      // UPDATE USER && SESSION
+      localStorage.setItem("session", JSON.stringify(data?.session));
+      localStorage.setItem("user", JSON.stringify(data?.session?.user));
 
       // console.log("Data:App ", data);
     } catch (error) {

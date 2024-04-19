@@ -48,7 +48,8 @@ function Header(): JSX.Element {
   const { searchParam, setSearchParam, handleSearch } =
     useContext(HomeContext)!;
 
-  const userData = sessionStorage.getItem("user");
+  // GET USER
+  const userData = localStorage.getItem("user");
   const user =
     userData && userData !== "undefined" ? JSON.parse(userData) : null;
   // console.log(user);
