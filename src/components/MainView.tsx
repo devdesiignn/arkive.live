@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
@@ -32,6 +33,7 @@ import handleDownload from "@/helper/fileDownloader";
 import { HomeContext } from "@/pages/Home";
 import NoResults from "@/assets/no_results.webp";
 import { ResearchProjectType } from "@/App";
+import { ITEMS_PER_PAGE } from "@/utils/constants";
 
 interface ResultsViewProps {
   researchProjects: ResearchProjectType[] | null;
@@ -67,51 +69,67 @@ function TopbarView(): JSX.Element {
   );
 }
 
-function ResultsView({ researchProjects }: ResultsViewProps): JSX.Element {
-  return researchProjects && researchProjects.length > 0 ? (
-    <div className="grid grid-cols-1 gap-4">
-      {researchProjects.map((researchProject) => (
-        <Card key={researchProject.id}>
-          <CardHeader className="gap-4">
-            <CardTitle className="hover:underline text-xl sm:text-2xl">
-              <Link
-                to={`/projects/${researchProject.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
+function View({ researchProjects }: ResultsViewProps): JSX.Element | null {
+  return (
+    researchProjects && (
+      <div className="grid grid-cols-1 gap-4">
+        {researchProjects.map((researchProject) => (
+          <Card key={researchProject.id}>
+            <CardHeader className="gap-4">
+              <CardTitle className="hover:underline text-xl sm:text-2xl">
+                <Link
+                  to={`/projects/${researchProject.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {researchProject.title}
+                </Link>
+              </CardTitle>
+              <CardDescription className="flex flex-wrap gap-1">
+                {researchProject.keywords.map((keyword, index) => (
+                  <Badge key={index}>
+                    {(keyword as { keyword?: string }).keyword}
+                  </Badge>
+                ))}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm sm:text-base">
+                {researchProject.abstract.split("\n\n")[0]}
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
+                onClick={() => {
+                  handleDownload({
+                    filePath: researchProject.document_url,
+                    fileName: researchProject.title,
+                  });
+                }}
               >
-                {researchProject.title}
-              </Link>
-            </CardTitle>
-            <CardDescription className="flex flex-wrap gap-1">
-              {researchProject.keywords.map((keyword, index) => (
-                <Badge key={index}>
-                  {(keyword as { keyword?: string }).keyword}
-                </Badge>
-              ))}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm sm:text-base">
-              {researchProject.abstract.split("\n\n")[0]}
-            </p>
-          </CardContent>
-          <CardFooter>
-            <Button
-              className="text-xs sm:text-sm flex gap-2 px-6 py-3 font-semibold"
-              onClick={() => {
-                handleDownload({
-                  filePath: researchProject.document_url,
-                  fileName: researchProject.title,
-                });
-              }}
-            >
-              Download
-              <DownloadSimple weight="bold" size={20} />
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+                Download
+                <DownloadSimple weight="bold" size={20} />
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    )
+  );
+}
+
+function ResultsView({ researchProjects }: ResultsViewProps): JSX.Element {
+  const { loading } = useContext(HomeContext)!;
+
+  return loading ? (
+    <div className="flex flex-col gap-6">
+      {Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => {
+        return <Skeleton className="h-16" key={index} />;
+      })}
     </div>
+  ) : researchProjects && researchProjects.length > 0 ? (
+    <View researchProjects={researchProjects} />
   ) : (
     <div className="flex flex-col justify-center items-center gap-4 py-4">
       <img
@@ -127,37 +145,67 @@ function ResultsView({ researchProjects }: ResultsViewProps): JSX.Element {
 }
 
 function PaginationView(): JSX.Element {
+  const { currentPage, totalPages, fetchResearchProjects } =
+    useContext(HomeContext)!;
+
   return (
     <div className="w-full flex items-center justify-between mx-auto sm:px-4 md:px-8 text-sm mt-auto">
       <p className="hidden sm:block">
-        Showing <span className="font-medium">01</span> of 20
+        Showing{" "}
+        <span className="font-medium">
+          {currentPage.toString().padStart(2, "0")}
+        </span>{" "}
+        of
+        <span className="font-medium">
+          {" "}
+          {totalPages.toString().padStart(2, "0")}
+        </span>
       </p>
 
       <div className="w-full sm:w-fit">
         <Pagination>
           <PaginationContent className="w-full justify-between">
             <PaginationItem>
-              <PaginationPrevious href="#" />
+              <PaginationPrevious
+                onClick={() => fetchResearchProjects(currentPage - 1)}
+                isActive={currentPage > 1}
+              />
             </PaginationItem>
 
             <div className="hidden sm:flex flex-row items-center gap-1">
               <PaginationItem>
-                <PaginationLink href="#" isActive>
+                <PaginationLink
+                  onClick={() => fetchResearchProjects(1)}
+                  isActive={currentPage === 1}
+                >
                   1
                 </PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">2</PaginationLink>
+                <PaginationLink
+                  onClick={() => fetchResearchProjects(2)}
+                  isActive={currentPage === 2}
+                >
+                  2
+                </PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
+                <PaginationLink
+                  onClick={() => fetchResearchProjects(3)}
+                  isActive={currentPage === 3}
+                >
+                  3
+                </PaginationLink>
               </PaginationItem>
               <PaginationItem>
                 <PaginationEllipsis />
               </PaginationItem>
             </div>
             <PaginationItem>
-              <PaginationNext href="#" />
+              <PaginationNext
+                onClick={() => fetchResearchProjects(currentPage + 1)}
+                isActive={currentPage < totalPages}
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
@@ -171,6 +219,7 @@ function MainView(): JSX.Element {
   // console.log(mockThesisData)
 
   const { researchProjects } = useContext(HomeContext)!;
+  // console.log(researchProjects);
 
   return (
     <>
