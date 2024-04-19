@@ -33,6 +33,10 @@ import KeywordInput from "@/components/KeywordInput";
 import usePageTitle from "@/hooks/usePageTitle";
 import { uploadFile } from "@/helper/fileUploader";
 import { supabase } from "@/utils/supabase";
+import {
+  getSessionFromLocalStorage,
+  getUserFromLocalStorage,
+} from "@/utils/localstorage";
 
 function UploadProject(): JSX.Element {
   usePageTitle("Upload");
@@ -57,9 +61,9 @@ function UploadProject(): JSX.Element {
   const [institution, setInstitution] = useState<string>("");
 
   // GET USER && SESSION
-  const sessionData = localStorage.getItem("session");
+  const sessionData = getSessionFromLocalStorage();
   const session = sessionData ? JSON.parse(sessionData) : null;
-  const userData = localStorage.getItem("user");
+  const userData = getUserFromLocalStorage();
   const user =
     userData && userData !== "undefined" ? JSON.parse(userData) : null;
   // console.log(session, user);

@@ -1,3 +1,4 @@
+import { removeLocalStorage } from "@/utils/localstorage";
 import { supabase } from "@/utils/supabase";
 import { AuthError } from "@supabase/supabase-js";
 
@@ -6,8 +7,7 @@ async function handleLogout(): Promise<void> {
     const { error } = await supabase.auth.signOut({ scope: "local" });
 
     // REMOVE USER && SESSION
-    localStorage.removeItem("session");
-    localStorage.removeItem("user");
+    removeLocalStorage();
 
     if (error) {
       throw new AuthError(error.message, error.status);

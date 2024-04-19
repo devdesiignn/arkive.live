@@ -12,6 +12,7 @@ import { Eye, EyeClosed, SpinnerGap } from "@phosphor-icons/react";
 
 import usePageTitle from "@/hooks/usePageTitle";
 import { supabase } from "@/utils/supabase";
+import { setLocalStorage } from "@/utils/localstorage";
 
 function Login(): JSX.Element {
   usePageTitle("Login");
@@ -55,8 +56,7 @@ function Login(): JSX.Element {
       // console.log("Data:", data);
 
       // SET USER && SESSION
-      localStorage.setItem("session", JSON.stringify(data?.session));
-      localStorage.setItem("user", JSON.stringify(data?.session?.user));
+      setLocalStorage(data);
 
       // CLEAR INPUTS
       setEmail("");

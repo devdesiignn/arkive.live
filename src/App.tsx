@@ -4,6 +4,7 @@ import { AuthError } from "@supabase/supabase-js";
 import AppRouter from "./routes";
 import { Tables } from "@/utils/database";
 import { supabase } from "./utils/supabase";
+import { setLocalStorage } from "./utils/localstorage";
 
 export type ResearchProjectType = Tables<"research-projects-table">;
 
@@ -17,8 +18,7 @@ function App() {
       }
 
       // UPDATE USER && SESSION
-      localStorage.setItem("session", JSON.stringify(data?.session));
-      localStorage.setItem("user", JSON.stringify(data?.session?.user));
+      setLocalStorage(data);
 
       // console.log("Data:App ", data);
     } catch (error) {

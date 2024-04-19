@@ -13,6 +13,7 @@ import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useNavigate } from "react-router-dom";
+import { getSessionFromLocalStorage } from "@/utils/localstorage";
 
 interface HomeContextType {
   searchParam: string;
@@ -66,7 +67,7 @@ function Home(): JSX.Element {
   const navigate = useNavigate();
 
   // GET SESSION
-  const sessionData = localStorage.getItem("session");
+  const sessionData = getSessionFromLocalStorage();
   const session = sessionData ? JSON.parse(sessionData) : null;
   // console.log(session);
 

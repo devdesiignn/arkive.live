@@ -34,6 +34,7 @@ import { HomeContext } from "@/pages/Home";
 import { supabase } from "@/utils/supabase";
 import handleLogout from "@/helper/handleLogout";
 import { baseURL } from "@/utils/baseurl";
+import { getUserFromLocalStorage } from "@/utils/localstorage";
 
 type Strength = 0 | 1 | 2 | 3;
 
@@ -49,7 +50,7 @@ function Header(): JSX.Element {
     useContext(HomeContext)!;
 
   // GET USER
-  const userData = localStorage.getItem("user");
+  const userData = getUserFromLocalStorage();
   const user =
     userData && userData !== "undefined" ? JSON.parse(userData) : null;
   // console.log(user);
