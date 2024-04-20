@@ -126,7 +126,8 @@ function ViewProject(): JSX.Element {
         const { data, error } = await supabase
           .from("research-projects-table")
           .select()
-          .eq("id", `${projectID}`);
+          .eq("id", `${projectID}`)
+          .single();
 
         if (error) {
           throw new Error(error.message);
@@ -134,7 +135,7 @@ function ViewProject(): JSX.Element {
 
         // console.log("Data:View", data);
 
-        data && data.length > 0 ? setProject(data[0]) : setProject(null);
+        data ? setProject(data) : setProject(null);
       } catch (error) {
         console.error(error);
 
@@ -148,16 +149,14 @@ function ViewProject(): JSX.Element {
 
   return (
     <div className="bg-white w-full min-h-screen py-12 flex items-center justify-center">
-      {project ? (
-        loading ? (
-          <div className="flex flex-col gap-4 w-11/12 max-w-[800px] mx-auto">
-            <Skeleton className="h-12" />
-            <Skeleton className="h-16" />
-            <Skeleton className="h-48" />
-          </div>
-        ) : (
-          <View project={project} />
-        )
+      {loading ? (
+        <div className="flex flex-col gap-4 w-11/12 max-w-[800px] mx-auto">
+          <Skeleton className="h-12" />
+          <Skeleton className="h-16" />
+          <Skeleton className="h-48" />
+        </div>
+      ) : project ? (
+        <View project={project} />
       ) : (
         <div className="flex flex-col justify-center items-center gap-4 py-4 w-11/12 max-w-[800px] mx-auto">
           <img
