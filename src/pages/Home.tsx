@@ -48,7 +48,7 @@ interface HomeContextType {
 
   currentPage: number;
   totalPages: number;
-  fetchResearchProjects: (page: number) => Promise<void>;
+  fetchResearchProjects: (page: number, sortBy: string) => Promise<void>;
 
   researchProjects: ResearchProjectType[] | null;
   setResearchProjects: React.Dispatch<
@@ -109,23 +109,40 @@ function Home(): JSX.Element {
     // search logic
   }
 
-  async function fetchResearchProjects(page: number): Promise<void> {
+  async function fetchResearchProjects(
+    page: number,
+    sortBy: string
+  ): Promise<void> {
     if (page < 1 || page > totalPages) return;
 
     try {
       const from = (page - 1) * ITEMS_PER_PAGE;
       const to = page * ITEMS_PER_PAGE - 1;
 
-      const { data, error, count } = await supabase
+      let order = { ascending: true };
+
+      if (sortBy === "newest") {
+        order = { ascending: false };
+      } else if (sortBy === "oldest") {
+        order = { ascending: true };
+      }
+
+      const query = supabase
         .from("research-projects-table")
         .select("*", { count: "exact" })
-        .range(from, to);
+        .range(from, to)
+        .order("date_uploaded", order);
+
+      // console.log(query);
+
+      const { data, error, count } = await query;
 
       if (error) {
         throw new Error(error.message);
       }
 
       // console.log("Data:Home", data);
+      // console.log("Count:Home", count);
 
       data && data.length > 0
         ? setResearchProjects(data)
@@ -146,8 +163,8 @@ function Home(): JSX.Element {
 
   // FETCH THE FIRST 10
   useEffect(() => {
-    fetchResearchProjects(1);
-  }, []);
+    fetchResearchProjects(1, sortBy);
+  }, [sortBy]);
 
   useEffect(() => {
     session && session?.access_token

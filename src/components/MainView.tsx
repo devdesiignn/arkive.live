@@ -145,7 +145,7 @@ function ResultsView({ researchProjects }: ResultsViewProps): JSX.Element {
 }
 
 function PaginationView(): JSX.Element {
-  const { currentPage, totalPages, fetchResearchProjects } =
+  const { currentPage, totalPages, fetchResearchProjects, sortBy } =
     useContext(HomeContext)!;
 
   return (
@@ -167,7 +167,7 @@ function PaginationView(): JSX.Element {
           <PaginationContent className="w-full justify-between">
             <PaginationItem>
               <PaginationPrevious
-                onClick={() => fetchResearchProjects(currentPage - 1)}
+                onClick={() => fetchResearchProjects(currentPage - 1, sortBy)}
                 isActive={currentPage > 1}
               />
             </PaginationItem>
@@ -175,7 +175,7 @@ function PaginationView(): JSX.Element {
             <div className="hidden sm:flex flex-row items-center gap-1">
               <PaginationItem>
                 <PaginationLink
-                  onClick={() => fetchResearchProjects(1)}
+                  onClick={() => fetchResearchProjects(1, sortBy)}
                   isActive={currentPage === 1}
                 >
                   1
@@ -183,7 +183,7 @@ function PaginationView(): JSX.Element {
               </PaginationItem>
               <PaginationItem>
                 <PaginationLink
-                  onClick={() => fetchResearchProjects(2)}
+                  onClick={() => fetchResearchProjects(2, sortBy)}
                   isActive={currentPage === 2}
                 >
                   2
@@ -191,7 +191,7 @@ function PaginationView(): JSX.Element {
               </PaginationItem>
               <PaginationItem>
                 <PaginationLink
-                  onClick={() => fetchResearchProjects(3)}
+                  onClick={() => fetchResearchProjects(3, sortBy)}
                   isActive={currentPage === 3}
                 >
                   3
@@ -203,7 +203,7 @@ function PaginationView(): JSX.Element {
             </div>
             <PaginationItem>
               <PaginationNext
-                onClick={() => fetchResearchProjects(currentPage + 1)}
+                onClick={() => fetchResearchProjects(currentPage + 1, sortBy)}
                 isActive={currentPage < totalPages}
               />
             </PaginationItem>
