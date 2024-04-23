@@ -48,7 +48,13 @@ interface HomeContextType {
 
   currentPage: number;
   totalPages: number;
-  fetchResearchProjects: (page: number, sortBy: string) => Promise<void>;
+  fetchResearchProjects: (
+    page: number,
+    sortBy: string,
+    bachelors: boolean | string,
+    masters: boolean | string,
+    phd: boolean | string
+  ) => Promise<void>;
 
   researchProjects: ResearchProjectType[] | null;
   setResearchProjects: React.Dispatch<
@@ -111,7 +117,10 @@ function Home(): JSX.Element {
 
   async function fetchResearchProjects(
     page: number,
-    sortBy: string
+    sortBy: string,
+    bachelors: boolean | string,
+    masters: boolean | string,
+    phd: boolean | string
   ): Promise<void> {
     if (page < 1 || page > totalPages) return;
 
@@ -119,19 +128,25 @@ function Home(): JSX.Element {
       const from = (page - 1) * ITEMS_PER_PAGE;
       const to = page * ITEMS_PER_PAGE - 1;
 
-      let order = { ascending: true };
+      // SORT BY
+      let order = undefined;
+      if (sortBy === "newest") order = { ascending: false };
+      else if (sortBy === "oldest") order = { ascending: true };
 
-      if (sortBy === "newest") {
-        order = { ascending: false };
-      } else if (sortBy === "oldest") {
-        order = { ascending: true };
-      }
+      // FILTER: DEGREE TYPE
+      const degreeType: string[] = [];
+      if (bachelors === true) degreeType.push("bachelors");
+      if (masters === true) degreeType.push("masters");
+      if (phd === true) degreeType.push("doctoral");
 
-      const query = supabase
+      let query = supabase
         .from("research-projects-table")
         .select("*", { count: "exact" })
         .range(from, to)
         .order("date_uploaded", order);
+
+      if (degreeType && degreeType.length > 0)
+        query = query.in("degree_type", degreeType);
 
       // console.log(query);
 
@@ -163,8 +178,8 @@ function Home(): JSX.Element {
 
   // FETCH THE FIRST 10
   useEffect(() => {
-    fetchResearchProjects(1, sortBy);
-  }, [sortBy]);
+    fetchResearchProjects(1, sortBy, bachelors, masters, phd);
+  }, [sortBy, bachelors, masters, phd]);
 
   useEffect(() => {
     session && session?.access_token
