@@ -75,7 +75,13 @@ function View({ researchProjects }: ResultsViewProps): JSX.Element | null {
       <div className="grid grid-cols-1 gap-4">
         {researchProjects.map((researchProject) => (
           <Card key={researchProject.id}>
-            <CardHeader className="gap-4">
+            <CardHeader className="gap-4 relative">
+              <Badge className="w-fit sm:absolute sm:self-end hover:bg-black">
+                {researchProject?.degree_type &&
+                  researchProject.degree_type.charAt(0).toUpperCase() +
+                    researchProject.degree_type.slice(1)}
+              </Badge>
+
               <CardTitle className="hover:underline text-xl sm:text-2xl">
                 <Link
                   to={`/projects/${researchProject.id}`}

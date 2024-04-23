@@ -34,9 +34,15 @@ function View({
 }): JSX.Element {
   return (
     <Card className="w-11/12 max-w-[800px] mx-auto">
-      <CardHeader className="gap-2">
+      <CardHeader className="gap-2 relative">
+        <Badge className="w-fit sm:absolute sm:self-end hover:bg-black">
+          {project?.degree_type &&
+            project.degree_type.charAt(0).toUpperCase() +
+              project.degree_type.slice(1)}
+        </Badge>
+
         <CardTitle className="text-xl sm:text-2xl">{project?.title}</CardTitle>
-        <CardDescription className="flex items-start justify-between text-sm sm:text-base gap-2">
+        <CardDescription className="flex items-start justify-between text-sm sm:text-base gap-2 flex-wrap">
           <div className="flex items-center text-black flex-wrap gap-x-2 gap-y-1">
             <HoverCard>
               <HoverCardTrigger>
@@ -67,7 +73,7 @@ function View({
             ))}
           </div>
 
-          <p className="shrink-0">
+          <p className="shrink sm:shrink-0">
             Uploaded:{" "}
             {project?.date_uploaded
               ? new Date(project?.date_uploaded).toLocaleDateString("en-GB", {
