@@ -2,70 +2,17 @@
 import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
-import mockThesisData, { Thesis } from "@/mock/results";
+import mockThesisData from "@/mock/results";
 import { ResearchProjectType } from "@/App";
 import { supabase } from "@/utils/supabase";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
+import { HomeContext } from "@/contexts/HomeContext";
 
-import { createContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Tag } from "react-tag-input";
-import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { CheckedState } from "@radix-ui/react-checkbox";
 import { useNavigate } from "react-router-dom";
 import { getSessionFromLocalStorage } from "@/utils/localstorage";
-
-interface HomeContextType {
-  searchParam: string;
-  setSearchParam: React.Dispatch<React.SetStateAction<string>>;
-
-  sortBy: string;
-  setSortBy: React.Dispatch<React.SetStateAction<string>>;
-
-  handleSearch: (
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement>
-      | React.FormEvent<HTMLButtonElement>
-  ) => void;
-
-  mockThesisData: Thesis[];
-
-  bachelors: CheckedState;
-  setBachelors: React.Dispatch<React.SetStateAction<CheckedState>>;
-
-  masters: CheckedState;
-  setMasters: React.Dispatch<React.SetStateAction<CheckedState>>;
-
-  phd: CheckedState;
-  setPhd: React.Dispatch<React.SetStateAction<CheckedState>>;
-
-  keywords: Tag[];
-  setKeywords: React.Dispatch<React.SetStateAction<Tag[]>>;
-
-  date: DateRange | undefined;
-  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-
-  currentPage: number;
-  totalPages: number;
-  fetchResearchProjects: (
-    page: number,
-    sortBy: string,
-    bachelors: boolean | string,
-    masters: boolean | string,
-    phd: boolean | string
-  ) => Promise<void>;
-
-  researchProjects: ResearchProjectType[] | null;
-  setResearchProjects: React.Dispatch<
-    React.SetStateAction<ResearchProjectType[] | null>
-  >;
-  loading: boolean;
-
-  // Add more properties as needed
-}
-
-export const HomeContext = createContext<HomeContextType | null>(null);
 
 function Home(): JSX.Element {
   usePageTitle("Home");
@@ -87,8 +34,8 @@ function Home(): JSX.Element {
   const [phd, setPhd] = useState<boolean | "indeterminate">(false);
   const [keywords, setKeywords] = useState<Tag[]>([]);
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2023, 0, 1),
-    to: addDays(new Date(), 0),
+    from: undefined,
+    to: undefined,
   });
 
   // VIEW SIDE
@@ -120,25 +67,34 @@ function Home(): JSX.Element {
     sortBy: string,
     bachelors: boolean | string,
     masters: boolean | string,
-    phd: boolean | string
+    phd: boolean | string,
+    date: DateRange | undefined
   ): Promise<void> {
     if (page < 1 || page > totalPages) return;
 
+    const from = (page - 1) * ITEMS_PER_PAGE;
+    const to = page * ITEMS_PER_PAGE - 1;
+
+    // SORT BY
+    let order = undefined;
+    if (sortBy === "newest") order = { ascending: false };
+    else if (sortBy === "oldest") order = { ascending: true };
+
+    // FILTER: DEGREE TYPE
+    const degreeType: string[] = [];
+    if (bachelors === true) degreeType.push("bachelors");
+    if (masters === true) degreeType.push("masters");
+    if (phd === true) degreeType.push("doctoral");
+
+    // FILTER: PUBLICATION DATE
+    const dateFrom = date?.from
+      ? new Date(date.from).toISOString().replace("T", " ").replace("Z", "+00")
+      : undefined;
+    const dateTo = date?.to
+      ? new Date(date.to).toISOString().replace("T", " ").replace("Z", "+00")
+      : undefined;
+
     try {
-      const from = (page - 1) * ITEMS_PER_PAGE;
-      const to = page * ITEMS_PER_PAGE - 1;
-
-      // SORT BY
-      let order = undefined;
-      if (sortBy === "newest") order = { ascending: false };
-      else if (sortBy === "oldest") order = { ascending: true };
-
-      // FILTER: DEGREE TYPE
-      const degreeType: string[] = [];
-      if (bachelors === true) degreeType.push("bachelors");
-      if (masters === true) degreeType.push("masters");
-      if (phd === true) degreeType.push("doctoral");
-
       let query = supabase
         .from("research-projects-table")
         .select("*", { count: "exact" })
@@ -147,6 +103,12 @@ function Home(): JSX.Element {
 
       if (degreeType && degreeType.length > 0)
         query = query.in("degree_type", degreeType);
+
+      if (dateFrom && dateTo) {
+        query = query
+          .gte("date_uploaded", dateFrom)
+          .lte("date_uploaded", dateTo);
+      }
 
       // console.log(query);
 
@@ -178,8 +140,8 @@ function Home(): JSX.Element {
 
   // FETCH THE FIRST 10
   useEffect(() => {
-    fetchResearchProjects(1, sortBy, bachelors, masters, phd);
-  }, [sortBy, bachelors, masters, phd]);
+    fetchResearchProjects(1, sortBy, bachelors, masters, phd, date);
+  }, [sortBy, bachelors, masters, phd, date]);
 
   useEffect(() => {
     session && session?.access_token

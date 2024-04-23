@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,12 +10,15 @@ import {
 } from "@/components/ui/popover";
 import { useContext } from "react";
 
-import { HomeContext } from "@/pages/Home";
+import { HomeContext } from "@/contexts/HomeContext";
 
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const { date, setDate } = useContext(HomeContext)!;
+
+  const currentDate = new Date();
+  const disabledDays = { after: currentDate };
 
   return (
     <div className={cn("grid gap-4", className)}>
@@ -49,10 +51,16 @@ export function DatePickerWithRange({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
-            numberOfMonths={2}
+            onSelect={(value) => {
+              // console.log(value?.from, value?.to, "value");
+              setDate({ from: value?.from, to: value?.to });
+            }}
+            numberOfMonths={1}
+            disabled={disabledDays}
+            toMonth={
+              new Date(currentDate.getFullYear(), currentDate.getMonth())
+            }
           />
         </PopoverContent>
       </Popover>

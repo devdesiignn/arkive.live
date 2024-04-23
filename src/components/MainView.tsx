@@ -30,7 +30,7 @@ import { Link } from "react-router-dom";
 import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
 
 import handleDownload from "@/helper/fileDownloader";
-import { HomeContext } from "@/pages/Home";
+import { HomeContext } from "@/contexts/HomeContext";
 import NoResults from "@/assets/no_results.webp";
 import { ResearchProjectType } from "@/App";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -159,6 +159,7 @@ function PaginationView(): JSX.Element {
     bachelors,
     masters,
     phd,
+    date,
   } = useContext(HomeContext)!;
 
   return (
@@ -186,7 +187,8 @@ function PaginationView(): JSX.Element {
                     sortBy,
                     bachelors,
                     masters,
-                    phd
+                    phd,
+                    date
                   )
                 }
                 isActive={currentPage > 1}
@@ -197,7 +199,14 @@ function PaginationView(): JSX.Element {
               <PaginationItem>
                 <PaginationLink
                   onClick={() =>
-                    fetchResearchProjects(1, sortBy, bachelors, masters, phd)
+                    fetchResearchProjects(
+                      1,
+                      sortBy,
+                      bachelors,
+                      masters,
+                      phd,
+                      date
+                    )
                   }
                   isActive={currentPage === 1}
                 >
@@ -207,7 +216,14 @@ function PaginationView(): JSX.Element {
               <PaginationItem>
                 <PaginationLink
                   onClick={() =>
-                    fetchResearchProjects(2, sortBy, bachelors, masters, phd)
+                    fetchResearchProjects(
+                      2,
+                      sortBy,
+                      bachelors,
+                      masters,
+                      phd,
+                      date
+                    )
                   }
                   isActive={currentPage === 2}
                 >
@@ -217,7 +233,14 @@ function PaginationView(): JSX.Element {
               <PaginationItem>
                 <PaginationLink
                   onClick={() =>
-                    fetchResearchProjects(3, sortBy, bachelors, masters, phd)
+                    fetchResearchProjects(
+                      3,
+                      sortBy,
+                      bachelors,
+                      masters,
+                      phd,
+                      date
+                    )
                   }
                   isActive={currentPage === 3}
                 >
@@ -236,7 +259,8 @@ function PaginationView(): JSX.Element {
                     sortBy,
                     bachelors,
                     masters,
-                    phd
+                    phd,
+                    date
                   )
                 }
                 isActive={currentPage < totalPages}

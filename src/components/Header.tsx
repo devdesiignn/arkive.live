@@ -30,7 +30,7 @@ import { PanelLeft } from "lucide-react";
 
 import { Filter } from "./Sidebar";
 import ShowPasswordStrength from "@/components/ShowPasswordStrength";
-import { HomeContext } from "@/pages/Home";
+import { HomeContext } from "@/contexts/HomeContext";
 import { supabase } from "@/utils/supabase";
 import handleLogout from "@/helper/handleLogout";
 import { baseURL } from "@/utils/baseurl";

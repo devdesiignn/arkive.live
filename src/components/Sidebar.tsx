@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import KeywordInput from "@/components/KeywordInput";
-import { HomeContext } from "@/pages/Home";
+import { HomeContext } from "@/contexts/HomeContext";
 import handleLogout from "@/helper/handleLogout";
 
 export function Filter(): JSX.Element {
