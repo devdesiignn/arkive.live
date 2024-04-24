@@ -44,6 +44,7 @@ interface HomeContextType {
     bachelors: boolean | string,
     masters: boolean | string,
     phd: boolean | string,
+    keywords: Tag[],
     date: DateRange | undefined
   ) => Promise<void>;
 

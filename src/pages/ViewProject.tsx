@@ -68,7 +68,7 @@ function View({
 
             {project?.coauthors?.map((coAuthor, index) => (
               <p key={index} className="font-medium sm:font-semibold text-base">
-                {(coAuthor as { "co-author": string })["co-author"]}
+                {coAuthor as string}
               </p>
             ))}
           </div>
@@ -94,9 +94,7 @@ function View({
 
         <div className="flex flex-wrap gap-1 mt-6">
           {project?.keywords.map((keyword, index) => (
-            <Badge key={index}>
-              {(keyword as { keyword?: string }).keyword}
-            </Badge>
+            <Badge key={index}>{keyword as string}</Badge>
           ))}
         </div>
       </CardContent>

@@ -93,9 +93,7 @@ function View({ researchProjects }: ResultsViewProps): JSX.Element | null {
               </CardTitle>
               <CardDescription className="flex flex-wrap gap-1">
                 {researchProject.keywords.map((keyword, index) => (
-                  <Badge key={index}>
-                    {(keyword as { keyword?: string }).keyword}
-                  </Badge>
+                  <Badge key={index}>{keyword as string}</Badge>
                 ))}
               </CardDescription>
             </CardHeader>
@@ -159,6 +157,7 @@ function PaginationView(): JSX.Element {
     bachelors,
     masters,
     phd,
+    keywords,
     date,
   } = useContext(HomeContext)!;
 
@@ -188,7 +187,8 @@ function PaginationView(): JSX.Element {
                     bachelors,
                     masters,
                     phd,
-                    date
+                    keywords,
+                    date,
                   )
                 }
                 isActive={currentPage > 1}
@@ -205,6 +205,7 @@ function PaginationView(): JSX.Element {
                       bachelors,
                       masters,
                       phd,
+                      keywords,
                       date
                     )
                   }
@@ -222,6 +223,7 @@ function PaginationView(): JSX.Element {
                       bachelors,
                       masters,
                       phd,
+                      keywords,
                       date
                     )
                   }
@@ -239,6 +241,7 @@ function PaginationView(): JSX.Element {
                       bachelors,
                       masters,
                       phd,
+                      keywords,
                       date
                     )
                   }
@@ -260,6 +263,7 @@ function PaginationView(): JSX.Element {
                     bachelors,
                     masters,
                     phd,
+                    keywords,
                     date
                   )
                 }

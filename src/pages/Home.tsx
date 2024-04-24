@@ -68,6 +68,7 @@ function Home(): JSX.Element {
     bachelors: boolean | string,
     masters: boolean | string,
     phd: boolean | string,
+    keywords: Tag[],
     date: DateRange | undefined
   ): Promise<void> {
     if (page < 1 || page > totalPages) return;
@@ -85,6 +86,10 @@ function Home(): JSX.Element {
     if (bachelors === true) degreeType.push("bachelors");
     if (masters === true) degreeType.push("masters");
     if (phd === true) degreeType.push("doctoral");
+
+    // FILTER: KEYWORDS
+    const keywordsArray = keywords?.map((keyword) => keyword.keyword) || [];
+    // console.log(keywordsArray);
 
     // FILTER: PUBLICATION DATE
     const dateFrom = date?.from
@@ -109,6 +114,9 @@ function Home(): JSX.Element {
 
       if (degreeType && degreeType.length > 0)
         query = query.in("degree_type", degreeType);
+
+      if (keywordsArray && keywordsArray.length > 0)
+        query = query.in("keywords->>0", keywordsArray);
 
       if (dateFrom && dateTo) {
         query = query
@@ -146,8 +154,8 @@ function Home(): JSX.Element {
 
   // FETCH THE FIRST 10
   useEffect(() => {
-    fetchResearchProjects(1, sortBy, bachelors, masters, phd, date);
-  }, [sortBy, bachelors, masters, phd, date]);
+    fetchResearchProjects(1, sortBy, bachelors, masters, phd, keywords, date);
+  }, [sortBy, bachelors, masters, phd, keywords, date]);
 
   useEffect(() => {
     session && session?.access_token

@@ -137,7 +137,7 @@ function UploadProject(): JSX.Element {
       const payload: object = {
         title,
         abstract,
-        keywords,
+        keywords: keywords.map((keyword) => keyword.keyword),
         degree_type: degreeType,
         degree_program: degreeProgram,
         degree_department: department,
@@ -146,8 +146,10 @@ function UploadProject(): JSX.Element {
         author_fullname: `${user?.user_metadata.firstName} ${user?.user_metadata.lastName}`,
         author_email: user?.email,
         degree_institution: institution,
-        coauthors: coAuthors,
+        coauthors: coAuthors.map((coAuthor) => coAuthor.id),
       };
+
+      // console.log(payload);
 
       // UPLOAD LOGIC
       const { error } = await supabase
