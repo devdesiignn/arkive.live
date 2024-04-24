@@ -8,15 +8,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useContext } from "react";
-
-import { HomeContext } from "@/contexts/HomeContext";
+import { DateRange } from "react-day-picker";
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const { date, setDate } = useContext(HomeContext)!;
-
+  date,
+  setDate,
+}: {
+  className?: string;
+  date: DateRange | undefined;
+  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+}) {
   const currentDate = new Date();
   const disabledDays = { after: currentDate };
 
@@ -56,11 +58,12 @@ export function DatePickerWithRange({
               // console.log(value?.from, value?.to, "value");
               setDate({ from: value?.from, to: value?.to });
             }}
-            numberOfMonths={1}
+            numberOfMonths={2}
             disabled={disabledDays}
             toMonth={
               new Date(currentDate.getFullYear(), currentDate.getMonth())
             }
+            pagedNavigation
           />
         </PopoverContent>
       </Popover>

@@ -88,10 +88,16 @@ function Home(): JSX.Element {
 
     // FILTER: PUBLICATION DATE
     const dateFrom = date?.from
-      ? new Date(date.from).toISOString().replace("T", " ").replace("Z", "+00")
+      ? new Date(date.from.getTime() - date.from.getTimezoneOffset() * 60_000)
+          .toISOString()
+          .replace("T", " ")
+          .replace("Z", "+00")
       : undefined;
     const dateTo = date?.to
-      ? new Date(date.to).toISOString().replace("T", " ").replace("Z", "+00")
+      ? new Date(date.to.getTime() - date.to.getTimezoneOffset() * 60_000)
+          .toISOString()
+          .replace("T", " ")
+          .replace("Z", "+00")
       : undefined;
 
     try {
@@ -127,7 +133,7 @@ function Home(): JSX.Element {
 
       count
         ? setTotalPages(Math.ceil(count / ITEMS_PER_PAGE))
-        : setTotalPages(0);
+        : setTotalPages(1);
 
       setCurrentPage(page);
     } catch (error) {

@@ -26,6 +26,8 @@ export function Filter(): JSX.Element {
     setPhd,
     keywords,
     setKeywords,
+    date,
+    setDate,
   } = useContext(HomeContext)!;
 
   return (
@@ -120,7 +122,7 @@ export function Filter(): JSX.Element {
             </AccordionTrigger>
             <AccordionContent>
               <div className="text-xs">
-                <DatePickerWithRange />
+                <DatePickerWithRange date={date} setDate={setDate} />
               </div>
             </AccordionContent>
           </AccordionItem>
