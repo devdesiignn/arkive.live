@@ -115,15 +115,13 @@ function Home(): JSX.Element {
       if (degreeType && degreeType.length > 0)
         query = query.in("degree_type", degreeType);
 
-      if (keywordsArray && keywordsArray.length > 0) {
+      if (keywordsArray && keywordsArray.length > 0)
         query = query.overlaps("keywords", keywordsArray);
-      }
 
-      if (dateFrom && dateTo) {
+      if (dateFrom && dateTo)
         query = query
           .gte("date_uploaded", dateFrom)
           .lte("date_uploaded", dateTo);
-      }
 
       // console.log(query);
 
