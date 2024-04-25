@@ -13,11 +13,13 @@ import { Tag } from "react-tag-input";
 import { DateRange } from "react-day-picker";
 import { useNavigate } from "react-router-dom";
 import { getSessionFromLocalStorage } from "@/utils/localstorage";
+import { useToast } from "@/components/ui/use-toast";
 
 function Home(): JSX.Element {
   usePageTitle("Home");
 
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   // GET SESSION
   const sessionData = getSessionFromLocalStorage();
@@ -133,7 +135,7 @@ function Home(): JSX.Element {
     if (dateFrom && dateTo)
       query = query.gte("date_uploaded", dateFrom).lte("date_uploaded", dateTo);
 
-    console.log(query);
+    // console.log(query);
 
     try {
       const { data, error, count } = await query;
@@ -155,7 +157,12 @@ function Home(): JSX.Element {
 
       setCurrentPage(page);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      toast({
+        title: "Something went Wrong!",
+        description: "Please refresh and Try again.",
+        variant: "destructive",
+      });
     } finally {
       // DISABLE LOADING SPINNER
       setLoading(false);

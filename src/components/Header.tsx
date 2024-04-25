@@ -125,7 +125,13 @@ function Header(): JSX.Element {
 
       // console.log("Data:Update", data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+
+      toast({
+        title: "Something went Wrong!",
+        description: "Please refresh and Try again.",
+        variant: "destructive",
+      });
     } finally {
       // CLOSE DIALOG
       setOpen(false);

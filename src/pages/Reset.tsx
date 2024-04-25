@@ -59,7 +59,7 @@ function Reset(): JSX.Element {
           "Check your email for the password reset link. If you don't see the email, please check your spam folder.",
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
 
       // ACCOUNT DOES NOT EXIST
       toast({

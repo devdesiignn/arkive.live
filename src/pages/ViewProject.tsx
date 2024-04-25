@@ -26,6 +26,7 @@ import handleDownload from "@/helper/fileDownloader";
 import { supabase } from "@/utils/supabase";
 import { ResearchProjectType } from "@/App";
 import NoResults from "@/assets/no_results.webp";
+import { useToast } from "@/components/ui/use-toast";
 
 function View({
   project,
@@ -118,6 +119,7 @@ function View({
 
 function ViewProject(): JSX.Element {
   const { projectID } = useParams();
+  const { toast } = useToast();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [project, setProject] = useState<ResearchProjectType | null>(null);
@@ -141,9 +143,13 @@ function ViewProject(): JSX.Element {
 
         data ? setProject(data) : setProject(null);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
 
-        // ADD TOAST
+        toast({
+          title: "Something went Wrong!",
+          description: "Please refresh and Try again.",
+          variant: "destructive",
+        });
       } finally {
         // DISABLE LOADING SPINNER
         setLoading(false);

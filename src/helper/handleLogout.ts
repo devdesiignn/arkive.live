@@ -13,7 +13,7 @@ async function handleLogout(): Promise<void> {
       throw new AuthError(error.message, error.status);
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 }
 

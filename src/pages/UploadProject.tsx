@@ -182,7 +182,7 @@ function UploadProject(): JSX.Element {
       // NAVIGATE TO HOME
       navigate("/home");
     } catch (error) {
-      console.error(error);
+      // console.error(error);
 
       // UPLOAD FAILED
       toast({

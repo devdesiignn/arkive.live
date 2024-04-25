@@ -79,7 +79,7 @@ function SetPassword(): JSX.Element {
         }
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
 
       toast({
         title: "Error Updating Password",
