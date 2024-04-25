@@ -46,7 +46,7 @@ function Header(): JSX.Element {
 
   const [strength, setStrength] = useState<Strength>(0);
 
-  const { searchParam, setSearchParam, handleSearch } =
+  const { searchParam, setSearchParam, handleSearch, setIsSearching } =
     useContext(HomeContext)!;
 
   // GET USER
@@ -186,7 +186,10 @@ function Header(): JSX.Element {
               placeholder="Search for Title, Keywords, Authors..."
               className="h-12 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-2 focus-visible:border-gray-700"
               value={searchParam}
-              onChange={(event) => setSearchParam(event.target.value)}
+              onChange={(event) => {
+                setSearchParam(event.target.value);
+                setIsSearching(false);
+              }}
             />
 
             <Button

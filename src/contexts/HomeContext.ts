@@ -57,6 +57,9 @@ interface HomeContextType {
   loading: boolean;
 
   isSearching: boolean;
+  setIsSearching: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
 
   // Add more properties as needed
 }

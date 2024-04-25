@@ -56,7 +56,7 @@ function Home(): JSX.Element {
     e.preventDefault();
 
     // HANDLE SEARCH SWITCH
-    searchParam ? setIsSearching(true) : setIsSearching(false);
+    if (searchParam) setIsSearching(true);
   }
 
   async function fetchResearchProjects(
@@ -133,7 +133,7 @@ function Home(): JSX.Element {
     if (dateFrom && dateTo)
       query = query.gte("date_uploaded", dateFrom).lte("date_uploaded", dateTo);
 
-    // console.log(query);
+    console.log(query);
 
     try {
       const { data, error, count } = await query;
@@ -178,6 +178,13 @@ function Home(): JSX.Element {
   }, [sortBy, bachelors, masters, phd, keywords, date, isSearching]);
 
   useEffect(() => {
+    // If searchParam changes and it's not empty, set isSearching to false
+    if (searchParam !== "") {
+      setIsSearching(false);
+    }
+  }, [searchParam]);
+
+  useEffect(() => {
     session && session?.access_token
       ? navigate("/home")
       : navigate("/auth/login");
@@ -220,6 +227,7 @@ function Home(): JSX.Element {
         fetchResearchProjects,
 
         isSearching,
+        setIsSearching,
       }}
     >
       <Layout>
