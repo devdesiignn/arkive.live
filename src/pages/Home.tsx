@@ -28,6 +28,9 @@ function Home(): JSX.Element {
   const [searchParam, setSearchParam] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("");
 
+  // SWITCH FOR DEFAULT FETCH / PARAM FETCH
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+
   // SEARCH SIDE
   const [bachelors, setBachelors] = useState<boolean | "indeterminate">(false);
   const [masters, setMasters] = useState<boolean | "indeterminate">(false);
@@ -48,18 +51,12 @@ function Home(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  // console.log("Sort By", sortBy);
-  // console.log("Search Param", searchParam);
-  // console.log("Mock Thesis Data", mockThesisData);
-  // console.log("Bachelors", bachelors, "Masters", masters, "PhD", phd);
-  // console.log("Keywords", keywords);
-  // console.log("Date", date);
-
   function handleSearch(e: { preventDefault: () => void }): void {
     // Prevent full reload
     e.preventDefault();
 
-    // search logic
+    // HANDLE SEARCH SWITCH
+    searchParam ? setIsSearching(true) : setIsSearching(false);
   }
 
   async function fetchResearchProjects(
@@ -69,7 +66,9 @@ function Home(): JSX.Element {
     masters: boolean | string,
     phd: boolean | string,
     keywords: Tag[],
-    date: DateRange | undefined
+    date: DateRange | undefined,
+    searchParam: string,
+    isSearching: boolean
   ): Promise<void> {
     if (page < 1 || page > totalPages) return;
 
@@ -105,26 +104,38 @@ function Home(): JSX.Element {
           .replace("Z", "+00")
       : undefined;
 
+    // DEFINING QUERY
+    let query;
+
+    searchParam && isSearching
+      ? (query = supabase
+          .rpc(
+            "search_projects",
+            {
+              query: searchParam,
+            },
+            { count: "exact" }
+          )
+          .range(from, to)
+          .order("date_uploaded", order))
+      : (query = supabase
+          .from("research-projects-table")
+          .select("*", { count: "exact" })
+          .range(from, to)
+          .order("date_uploaded", order));
+
+    if (degreeType && degreeType.length > 0)
+      query = query.in("degree_type", degreeType);
+
+    if (keywordsArray && keywordsArray.length > 0)
+      query = query.overlaps("keywords", keywordsArray);
+
+    if (dateFrom && dateTo)
+      query = query.gte("date_uploaded", dateFrom).lte("date_uploaded", dateTo);
+
+    // console.log(query);
+
     try {
-      let query = supabase
-        .from("research-projects-table")
-        .select("*", { count: "exact" })
-        .range(from, to)
-        .order("date_uploaded", order);
-
-      if (degreeType && degreeType.length > 0)
-        query = query.in("degree_type", degreeType);
-
-      if (keywordsArray && keywordsArray.length > 0)
-        query = query.overlaps("keywords", keywordsArray);
-
-      if (dateFrom && dateTo)
-        query = query
-          .gte("date_uploaded", dateFrom)
-          .lte("date_uploaded", dateTo);
-
-      // console.log(query);
-
       const { data, error, count } = await query;
 
       if (error) {
@@ -153,8 +164,18 @@ function Home(): JSX.Element {
 
   // FETCH THE FIRST 10
   useEffect(() => {
-    fetchResearchProjects(1, sortBy, bachelors, masters, phd, keywords, date);
-  }, [sortBy, bachelors, masters, phd, keywords, date]);
+    fetchResearchProjects(
+      1,
+      sortBy,
+      bachelors,
+      masters,
+      phd,
+      keywords,
+      date,
+      searchParam,
+      isSearching
+    );
+  }, [sortBy, bachelors, masters, phd, keywords, date, isSearching]);
 
   useEffect(() => {
     session && session?.access_token
@@ -197,6 +218,8 @@ function Home(): JSX.Element {
         currentPage,
         totalPages,
         fetchResearchProjects,
+
+        isSearching,
       }}
     >
       <Layout>

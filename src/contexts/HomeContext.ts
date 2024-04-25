@@ -45,7 +45,9 @@ interface HomeContextType {
     masters: boolean | string,
     phd: boolean | string,
     keywords: Tag[],
-    date: DateRange | undefined
+    date: DateRange | undefined,
+    searchParam: string,
+    isSearching: boolean
   ) => Promise<void>;
 
   researchProjects: ResearchProjectType[] | null;
@@ -53,6 +55,8 @@ interface HomeContextType {
     React.SetStateAction<ResearchProjectType[] | null>
   >;
   loading: boolean;
+
+  isSearching: boolean;
 
   // Add more properties as needed
 }

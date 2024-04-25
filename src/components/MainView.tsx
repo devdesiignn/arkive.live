@@ -159,6 +159,8 @@ function PaginationView(): JSX.Element {
     phd,
     keywords,
     date,
+    searchParam,
+    isSearching,
   } = useContext(HomeContext)!;
 
   return (
@@ -189,6 +191,8 @@ function PaginationView(): JSX.Element {
                     phd,
                     keywords,
                     date,
+                    searchParam,
+                    isSearching
                   )
                 }
                 isActive={currentPage > 1}
@@ -206,7 +210,9 @@ function PaginationView(): JSX.Element {
                       masters,
                       phd,
                       keywords,
-                      date
+                      date,
+                      searchParam,
+                      isSearching
                     )
                   }
                   isActive={currentPage === 1}
@@ -224,7 +230,9 @@ function PaginationView(): JSX.Element {
                       masters,
                       phd,
                       keywords,
-                      date
+                      date,
+                      searchParam,
+                      isSearching
                     )
                   }
                   isActive={currentPage === 2}
@@ -242,7 +250,9 @@ function PaginationView(): JSX.Element {
                       masters,
                       phd,
                       keywords,
-                      date
+                      date,
+                      searchParam,
+                      isSearching
                     )
                   }
                   isActive={currentPage === 3}
@@ -264,7 +274,9 @@ function PaginationView(): JSX.Element {
                     masters,
                     phd,
                     keywords,
-                    date
+                    date,
+                    searchParam,
+                    isSearching
                   )
                 }
                 isActive={currentPage < totalPages}
