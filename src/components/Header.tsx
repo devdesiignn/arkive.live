@@ -149,8 +149,8 @@ function Header(): JSX.Element {
 
   return (
     <header className="flex justify-between items-center max-[320px]:px-2 px-4 md:px-8 py-2 border-b sticky top-0 z-10 bg-white">
-      <div className="font-black font-serif text-xl underline hidden lg:block">
-        <Link to="/home">Archive.</Link>
+      <div className="font-medium text-xl underline hidden lg:block">
+        <Link to="/home">/ˈɑːkʌɪv/</Link>
       </div>
 
       <Sheet>
@@ -160,8 +160,8 @@ function Header(): JSX.Element {
           </div>
         </SheetTrigger>
         <SheetContent side="left" className="lg:hidden flex flex-col gap-8">
-          <div className="font-black font-serif text-xl underline">
-            <Link to="/home">Archive.</Link>
+          <div className="font-medium text-xl underline">
+            <Link to="/home">/ˈɑːkʌɪv/</Link>
           </div>
 
           <Filter />
