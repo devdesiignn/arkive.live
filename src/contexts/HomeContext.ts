@@ -3,7 +3,7 @@ import { ResearchProjectType } from "@/App";
 import { Tag } from "react-tag-input";
 import { DateRange } from "react-day-picker";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import { Thesis } from "@/mock/results";
+// import { Thesis } from "@/mock/results";
 
 interface HomeContextType {
   searchParam: string;
@@ -19,7 +19,7 @@ interface HomeContextType {
       | React.FormEvent<HTMLButtonElement>
   ) => void;
 
-  mockThesisData: Thesis[];
+  // mockThesisData: Thesis[];
 
   bachelors: CheckedState;
   setBachelors: React.Dispatch<React.SetStateAction<CheckedState>>;

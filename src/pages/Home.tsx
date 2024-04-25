@@ -2,7 +2,7 @@
 import Layout from "@/components/Layout";
 import MainView from "@/components/MainView";
 import usePageTitle from "@/hooks/usePageTitle";
-import mockThesisData from "@/mock/results";
+// import mockThesisData from "@/mock/results";
 import { ResearchProjectType } from "@/App";
 import { supabase } from "@/utils/supabase";
 import { ITEMS_PER_PAGE } from "@/utils/constants";
@@ -208,7 +208,7 @@ function Home(): JSX.Element {
 
         handleSearch,
 
-        mockThesisData,
+        // mockThesisData,
 
         bachelors,
         setBachelors,
