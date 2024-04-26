@@ -12,6 +12,10 @@ import ViewProject from "./pages/ViewProject";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Home />,
+  },
+  {
     path: "home",
     element: <Home />,
   },
