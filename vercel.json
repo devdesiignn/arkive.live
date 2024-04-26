@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/home",
-      "statusCode": 307
+      "destination": "/"
     }
   ]
 }
