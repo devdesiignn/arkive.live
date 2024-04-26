@@ -94,9 +94,15 @@ function View({
         </div>
 
         <div className="flex flex-wrap gap-1 mt-6">
-          {project?.keywords.map((keyword, index) => (
-            <Badge key={index}>{keyword as string}</Badge>
-          ))}
+          {(project?.keywords as string[]).map(
+            (keyword: string | null, index: number) => (
+              <Badge key={index}>
+                {keyword
+                  ? keyword.charAt(0).toUpperCase() + keyword.slice(1)
+                  : ""}
+              </Badge>
+            )
+          )}
         </div>
       </CardContent>
       <CardFooter>

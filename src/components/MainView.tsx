@@ -92,9 +92,15 @@ function View({ researchProjects }: ResultsViewProps): JSX.Element | null {
                 </Link>
               </CardTitle>
               <CardDescription className="flex flex-wrap gap-1">
-                {researchProject.keywords.map((keyword, index) => (
-                  <Badge key={index}>{keyword as string}</Badge>
-                ))}
+                {(researchProject?.keywords as string[]).map(
+                  (keyword: string | null, index: number) => (
+                    <Badge key={index}>
+                      {keyword
+                        ? keyword.charAt(0).toUpperCase() + keyword.slice(1)
+                        : ""}
+                    </Badge>
+                  )
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent>

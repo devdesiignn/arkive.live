@@ -89,7 +89,8 @@ function Home(): JSX.Element {
     if (phd === true) degreeType.push("doctoral");
 
     // FILTER: KEYWORDS
-    const keywordsArray = keywords?.map((keyword) => keyword.keyword) || [];
+    const keywordsArray =
+      keywords?.map((keyword) => keyword.keyword.toLowerCase()) || [];
     // console.log(keywordsArray);
 
     // FILTER: PUBLICATION DATE
