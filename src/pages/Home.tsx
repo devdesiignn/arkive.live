@@ -90,7 +90,7 @@ function Home(): JSX.Element {
 
     // FILTER: KEYWORDS
     const keywordsArray =
-      keywords?.map((keyword) => keyword.keyword.toLowerCase()) || [];
+      keywords?.map((key) => key.keyword.toLowerCase()) || [];
     // console.log(keywordsArray);
 
     // FILTER: PUBLICATION DATE

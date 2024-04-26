@@ -137,7 +137,7 @@ function UploadProject(): JSX.Element {
       const payload: object = {
         title,
         abstract,
-        keywords: keywords.map((keyword) => keyword.keyword.toLowerCase()),
+        keywords: keywords.map((key) => key.keyword.toLowerCase()),
         degree_type: degreeType,
         degree_program: degreeProgram,
         degree_department: department,
